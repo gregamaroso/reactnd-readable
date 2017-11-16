@@ -5,7 +5,7 @@ export default class Category extends Component {
   render() {
     return (
       <div>
-        <p class="temp-description">This page will have a list of all posts for a single cateogry along with some metadata for each.</p>
+        <p className="temp-description">This page will have a list of all posts for a single cateogry along with some metadata for each.</p>
 
         <p><Link to="/">Home</Link> &raquo; [ category ]</p>
         <ul>
