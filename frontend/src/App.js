@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 import Header from './components/Header'
 import Categories from './components/Categories'
 import Category from './components/Category'
+import Post from './components/Post'
 import Footer from './components/Footer'
 
 class App extends Component {
@@ -20,6 +21,10 @@ class App extends Component {
 
           <Route path="/category" render={() => (
             <Category />
+          )} />
+
+          <Route path="/post" render={() => (
+            <Post />
           )} />
         </div>
 

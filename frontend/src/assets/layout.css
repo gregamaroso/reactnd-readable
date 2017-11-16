@@ -1,6 +1,11 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+/* Typography */
+
+body {
   font-family: sans-serif;
 }
 
@@ -9,8 +14,30 @@ a {
   outline: none;
 }
 
+/* Unordered Lists */
+
+ul,
+li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+li:first-child {
+  padding-top: 0;
+}
+
+li:last-child {
+  padding-bottom: 0;
+}
+
+ul ul {
+  padding-top: 20px;
+  padding-bottom: 0;
+}
+
+/* App */
+
 .app {
-  text-align: center;
 }
 
 .app__content {
@@ -22,4 +49,11 @@ a {
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.temp-description {
+  display: block;
+  padding: 20px;
+  margin-bottom: 40px;
+  background-color: #ebebeb;
 }
