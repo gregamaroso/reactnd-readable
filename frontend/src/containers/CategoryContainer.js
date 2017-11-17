@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // TODO: I should break this into 2 dispatches. Currently I'm chaining Promises
+    // TODO: I should break this into 2 dispatches
     fetchData: (category) => dispatch(postsFetchData(category))
   }
 }
