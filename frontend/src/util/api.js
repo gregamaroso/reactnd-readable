@@ -4,19 +4,92 @@
 
 const api = 'http://localhost:3001';
 const headers = {
-  'Authorization': 'blah'
+  'Authorization': 'blah',
 };
 
 /**
- * Multi-requests
+ * Promises
  */
 
-export function getMultiPromise(multi = []) {
-  return Promise.all(multi);
+function getCategoriesPromise() {
+ return fetch(`${api}/categories`, { headers });
 }
 
-export function getMulti(multi = []) {
-  return getMultiPromise(multi)
+function getPostsPromise() {
+ return fetch(`${api}/posts`, { headers });
+}
+
+function getPostsByCategoryPromise(category) {
+  return fetch(`${api}/${category}/posts`, { headers });
+}
+
+/**
+ * Categories
+ */
+
+// Retrieve a single category object based on the 'path' key
+//
+// Returns:
+// {
+//    category: {}
+// }
+export function getCategory(path) {
+  return getCategories()
+    .then((res) => res.find(r => r.path === path));
+}
+
+// Retrieve all categories
+//
+// Returns:
+// {
+//    categories: [{}, {}, {}]
+// }
+export function getCategories() {
+  return getCategoriesPromise()
+    .then((res) => {
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+      return res;
+    })
+    .then((res) => res.json());
+}
+
+/**
+ * Posts
+ */
+
+// Retrieve all posts
+//
+// Returns:
+// {
+//    posts: [{}, {}, {}]
+// }
+export function getPosts() {
+  return getPostsPromise()
+    .then((res) => {
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+      return res;
+    })
+    .then((res) => res.json());
+}
+
+// Retrieve all posts for a given category
+//
+// Returns:
+// {
+//    category: {}
+//    posts: [{}, {}, {}]
+// }
+export function getPostsByCategory(categoryPath = 'nonexistentcategory') {
+  const promises = [
+    getCategoriesPromise(),
+    getPostsByCategoryPromise(categoryPath),
+  ]
+
+  return Promise.all(promises)
     .then(responses => {
       let isError = false;
       let messages = [];
@@ -35,44 +108,16 @@ export function getMulti(multi = []) {
 
       return responses;
     })
-    .then(responses => Promise.all(responses.map(res => res.json())));
-}
+    .then(responses => Promise.all(responses.map(res => res.json())))
+    .then(responses => {
+      const [ categories, posts ] = responses;
+      const category = categories.categories.find(cat => cat.path === categoryPath);
 
-/**
- * Categories
- */
-
-export function getCategoriesPromise() {
-  return fetch(`${api}/categories`, { headers });
-}
-
-export function getCategory(path = '') {
-  return getCategories()
-    .then((res) => res.find(r => r.path === path));
-}
-
-export function getCategories() {
-  return getCategoriesPromise()
-    .then((res) => {
-      if (!res.ok) {
-        throw Error(res.statusText);
-      }
-      return res;
-    })
-    .then((res) => res.json());
-}
-
-/**
- * Posts
- */
-
-export function getPostsPromise(category = '') {
-  return fetch(`${api}/${category}/posts`, { headers });
-}
-
-export function getPosts(category = '') {
-  return getPostsPromise(category)
-    .then((res) => res.json());
+      return {
+        posts,
+        category,
+      };
+    });
 }
 
 export function getPost(id) {

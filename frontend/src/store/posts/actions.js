@@ -1,4 +1,4 @@
-import { getMulti, getCategoriesPromise, getPostsPromise } from '../../util/api';
+import { getPostsByCategory } from '../../util/api';
 
 import {
   POSTS_FETCH_SUCCESS,
@@ -42,16 +42,9 @@ export function postsFetchData(categoryPath) {
   return (dispatch) => {
     dispatch(postsAreLoading(true));
 
-    const postsPromise = getPostsPromise(categoryPath);
-    const categoryPromise = getCategoriesPromise();
-
-    getMulti([postsPromise, categoryPromise])
-      .then(responses => {
-        const [ posts, allCategories ] = responses;
-
-        // TODO: this filter should come from the api, not an action creator
-        const category = allCategories.categories.find(cat => cat.path === categoryPath);
-
+    getPostsByCategory(categoryPath)
+      .then((res) => {
+        const { category, posts } = res;
         dispatch(postsAreLoading(false));
         dispatch(postsFetchDataSuccess(posts));
         dispatch(categoryFetchDataSuccess(category));

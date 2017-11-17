@@ -1,18 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
-import { categoriesFetchData } from '../store/categories/actions';
-
-class Categories extends Component {
-  componentDidMount() {
-    this.props.fetchData();
-  }
-
+export default class Categories extends Component {
   render() {
-    const { isLoading, hasErrored, categories } = this.props;
+    const { categories, isLoading, hasErrored } = this.props;
 
     if (isLoading) {
       return <Loading delay={200} type='spin' color='#222' className='loading' />
@@ -37,19 +29,3 @@ class Categories extends Component {
     )
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    categories: state.categories,
-    hasErrored: state.categoriesHasErrored,
-    isLoading: state.categoriesAreLoading,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchData: () => dispatch(categoriesFetchData())
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Categories));

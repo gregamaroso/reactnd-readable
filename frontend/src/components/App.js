@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
 // Components
-import Header from './Header'
-import Categories from './Categories'
-import Category from './Category'
-import Post from './Post'
-import Footer from './Footer'
+import Header from './Header';
+import Footer from './Footer';
+import CategoriesContainer from '../containers/CategoriesContainer';
+import CategoryContainer from '../containers/CategoryContainer';
+import PostContainer from '../containers/PostContainer';
+
 
 import '../assets/layout.css';
 
@@ -17,9 +18,9 @@ class App extends Component {
         <Header />
 
         <div className="app__content">
-          <Route exact path="/" component={Categories} />
-          <Route path="/category/:category" component={Category} />
-          <Route path="/post" component={Post} />
+          <Route exact path="/" component={CategoriesContainer} />
+          <Route path="/category/:category" component={CategoryContainer} />
+          <Route path="/post" component={PostContainer} />
         </div>
 
         <Footer />

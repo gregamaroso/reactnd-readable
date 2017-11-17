@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
-import { postsFetchData } from '../store/posts/actions';
-
-class Category extends Component {
-  componentDidMount() {
-    this.props.fetchData(this.props.match.params.category);
-  }
-
+export default class Category extends Component {
   render() {
     const { isLoading, hasErrored, posts, category } = this.props;
 
@@ -39,21 +31,3 @@ class Category extends Component {
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    posts: state.posts,
-    category: state.category,
-    hasErrored: state.postsHasErrored,
-    isLoading: state.postsAreLoading,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // TODO: I should break this into 2 dispatches. Currently I'm chaining Promises
-    fetchData: (category) => dispatch(postsFetchData(category))
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Category));
