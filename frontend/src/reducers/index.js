@@ -1,25 +1,13 @@
 import { combineReducers } from 'redux';
 
 import {
-  RECEIVE_CATEGORIES,
-} from '../actions';
+  categories,
+  categoriesHasErrored,
+  categoriesAreLoading
+} from '../store/Categories/reducers'
 
-const getAll = (state = [], action) => {
-  switch (action.type) {
-    case RECEIVE_CATEGORIES:
-      const { categories } = action;
-
-      return {
-        ...state,
-        categories
-      };
-    default:
-      return state;
-  }
-};
-
-const categories = combineReducers({
-  getAll,
+export default combineReducers({
+  categories,
+  categoriesHasErrored,
+  categoriesAreLoading,
 });
-
-export default categories;

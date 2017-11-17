@@ -3,53 +3,53 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
-import * as actions from '../actions';
+
+import { categoriesFetchData } from '../store/Categories/actions';
 
 class Categories extends Component {
-  state = {
-    categories: [],
-    loadingCategories: false,
-  };
-
   componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData() {
-    const { fetchCategories } = this.props;
-    fetchCategories();
+    this.props.fetchData();
   }
 
   render() {
-    const { loadingCategories } = this.state;
+    const { isLoading, hasErrored, categories } = this.props;
+
+    if (isLoading) {
+      return <Loading delay={200} type='spin' color='#222' className='loading' />
+    }
+
+    if (hasErrored) {
+      return `<p>You suck. Try again.</p>`;
+    }
 
     return (
       <div>
-        <p className="temp-description">This page will have a list of all categories, possibly ordered by last comment date.</p>
-
         <p>Home</p>
-        <ul>
-          <li><Link to="/category/foo">Category foo</Link> (3 posts)</li>
-          <li><Link to="/category/bar">Category bar</Link> (100 posts)</li>
-          <li><Link to="/category/acme">Category acme</Link> (54 posts)</li>
-        </ul>
 
-        {loadingCategories === true
-          ? <Loading delay={200} type='spin' color='#222' className='loading' />
-          : <p>Blah</p>}
+        <ul>
+          {categories.map((category) => (
+          <li key={category.path}>
+            <Link to="/category/foot">{category.name}</Link> (3 posts)
+          </li>
+          ))}
+        </ul>
       </div>
     )
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
-    loadingCategories: false,
-    categories: state.categories
+    categories: state.categories,
+    hasErrored: state.categoriesHasErrored,
+    isLoading: state.categoriesAreLoading,
   };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchData: () => dispatch(categoriesFetchData())
+  }
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  actions,
-)(Categories));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Categories));
