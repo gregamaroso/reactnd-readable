@@ -1,6 +1,12 @@
 import { combineReducers } from 'redux';
 
 import {
+  category,
+  categoryHasErrored,
+  categoryIsLoading
+} from '../store/Category/reducers'
+
+import {
   categories,
   categoriesHasErrored,
   categoriesAreLoading
@@ -10,12 +16,17 @@ import {
   posts,
   postsHasErrored,
   postsAreLoading
-} from '../store/Category/reducers'
+} from '../store/Posts/reducers'
 
 export default combineReducers({
+  category,
+  categoryHasErrored,
+  categoryIsLoading,
+
   categories,
   categoriesHasErrored,
   categoriesAreLoading,
+
   posts,
   postsHasErrored,
   postsAreLoading,

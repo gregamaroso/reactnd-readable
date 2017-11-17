@@ -4,23 +4,22 @@ import { withRouter } from 'react-router-dom';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
-import { postsFetchData } from '../store/Category/actions';
+import { postsFetchData } from '../store/Posts/actions';
 
 class Category extends Component {
   componentDidMount() {
     const { match } = this.props;
-    const category = match.params.category;
-    this.props.fetchData(category);
+    this.props.fetchData(match.params.category);
   }
 
   render() {
-    const { isLoading, hasErrored, posts } = this.props;
+    const { isLoading, hasErrored, posts, category } = this.props;
 
     return (
       <div>
         <p className="temp-description">This page will have a list of all posts for a single cateogry along with some metadata for each.</p>
 
-        <div className="breadcrumb"><Link to="/">Home</Link> &raquo; [ category ]</div>
+        <div className="breadcrumb"><Link to="/">Home</Link> &raquo; [ {category.name} ]</div>
 
         <ul>
           {posts.map((post) => (
@@ -30,13 +29,14 @@ class Category extends Component {
           ))}
         </ul>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     posts: state.posts,
+    category: state.category,
     hasErrored: state.postsHasErrored,
     isLoading: state.postsAreLoading,
   };
@@ -44,6 +44,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    // TODO: I should break this into 2 dispatches. Currently I'm chaining Promises
     fetchData: (category) => dispatch(postsFetchData(category))
   }
 }

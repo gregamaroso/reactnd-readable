@@ -66,4 +66,6 @@ ul ul {
   padding: 20px;
   margin-bottom: 40px;
   background-color: #ebebeb;
+  color: red;
+  font-style: italic;
 }
