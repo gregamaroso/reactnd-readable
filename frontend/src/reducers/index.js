@@ -2,27 +2,19 @@ import { combineReducers } from 'redux';
 
 import {
   category,
-  categoryHasErrored,
-  categoryIsLoading
-} from '../store/Category/reducers'
-
-import {
   categories,
   categoriesHasErrored,
   categoriesAreLoading
-} from '../store/Categories/reducers'
+} from '../store/categories/reducers'
 
 import {
   posts,
   postsHasErrored,
   postsAreLoading
-} from '../store/Posts/reducers'
+} from '../store/posts/reducers'
 
 export default combineReducers({
   category,
-  categoryHasErrored,
-  categoryIsLoading,
-
   categories,
   categoriesHasErrored,
   categoriesAreLoading,

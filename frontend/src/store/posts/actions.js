@@ -1,7 +1,4 @@
-import {
-  api,
-  headers
-} from '../../util/api';
+import { getMulti, getCategoriesPromise, getPostsPromise } from '../../util/api';
 
 import {
   POSTS_FETCH_SUCCESS,
@@ -9,7 +6,7 @@ import {
   POSTS_ARE_LOADING
 } from './constants';
 
-import { categoryFetchDataSuccess } from '../Category/actions';
+import { categoryFetchDataSuccess } from '../categories/actions';
 
 
 /**
@@ -45,35 +42,17 @@ export function postsFetchData(categoryPath) {
   return (dispatch) => {
     dispatch(postsAreLoading(true));
 
-    const postsPromise = fetch(`${api}/${categoryPath}/posts`, { headers });
-    const categoryPromise = fetch(`${api}/categories`, { headers });
+    const postsPromise = getPostsPromise(categoryPath);
+    const categoryPromise = getCategoriesPromise();
 
-    Promise
-      .all([postsPromise, categoryPromise])
-      .then(responses => {
-        let isError = false;
-        let messages = [];
-
-        responses.forEach(res => {
-          if (!res.ok) {
-            isError = true;
-            messages.push(res.statusText);
-          }
-        });
-
-        if (isError) {
-          throw Error(messages.join("\n"));
-        }
-
-        dispatch(postsAreLoading(false));
-        return responses;
-      })
-      .then(responses => {
-        return Promise.all(responses.map(res => res.json()));
-      })
+    getMulti([postsPromise, categoryPromise])
       .then(responses => {
         const [ posts, allCategories ] = responses;
+
+        // TODO: this filter should come from the api, not an action creator
         const category = allCategories.categories.find(cat => cat.path === categoryPath);
+
+        dispatch(postsAreLoading(false));
         dispatch(postsFetchDataSuccess(posts));
         dispatch(categoryFetchDataSuccess(category));
       })

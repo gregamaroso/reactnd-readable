@@ -4,16 +4,23 @@ import { withRouter } from 'react-router-dom';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
-import { postsFetchData } from '../store/Posts/actions';
+import { postsFetchData } from '../store/posts/actions';
 
 class Category extends Component {
   componentDidMount() {
-    const { match } = this.props;
-    this.props.fetchData(match.params.category);
+    this.props.fetchData(this.props.match.params.category);
   }
 
   render() {
     const { isLoading, hasErrored, posts, category } = this.props;
+
+    if (isLoading) {
+      return <Loading delay={200} type='spin' color='#222' className='loading' />
+    }
+
+    if (hasErrored) {
+      return `<p>You suck. Try again.</p>`;
+    }
 
     return (
       <div>

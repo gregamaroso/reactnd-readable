@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
-import { categoriesFetchData } from '../store/Categories/actions';
+import { categoriesFetchData } from '../store/categories/actions';
 
 class Categories extends Component {
   componentDidMount() {
