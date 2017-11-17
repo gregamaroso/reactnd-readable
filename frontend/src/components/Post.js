@@ -7,7 +7,8 @@ export default class Post extends Component {
       <div>
         <p className="temp-description">This page will contain the initial post text, following by a list of threaded comments.</p>
 
-        <p><Link to="/">Home</Link> &raquo; <Link to="/category/foo">[ category linked ]</Link> &raquo; [ post name ]</p>
+        <div className="breadcrumb"><Link to="/">Home</Link> &raquo; <Link to="/category/foo">[ category linked ]</Link> &raquo; [ post name ]</div>
+
         <p>Add the initial post text here. Add the initial post text here. Add the initial post text here. Add the initial post text here. Add the initial post text here.</p>
         <ul>
           <li>Comment #1 (vote: up | down)

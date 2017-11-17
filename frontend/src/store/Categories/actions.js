@@ -28,7 +28,7 @@ export function categoriesAreLoading(bool) {
   }
 }
 
-export function categoresFetchDataSuccess(categories) {
+export function categoriesFetchDataSuccess(categories) {
   return {
     type: CATEGORIES_FETCH_SUCCESS,
     categories: categories.categories  // note: the array of categories is a key of the response
@@ -53,7 +53,7 @@ export function categoriesFetchData() {
         return res;
       })
       .then((res) => res.json())
-      .then((categories) => dispatch(categoresFetchDataSuccess(categories)))
+      .then((categories) => dispatch(categoriesFetchDataSuccess(categories)))
       .catch(() => dispatch(categoriesHasErrored(true)));
   };
 }

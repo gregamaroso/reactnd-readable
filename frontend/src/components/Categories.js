@@ -24,12 +24,12 @@ class Categories extends Component {
 
     return (
       <div>
-        <p>Home</p>
+        <div className="breadcrumb">Home</div>
 
         <ul>
           {categories.map((category) => (
           <li key={category.path}>
-            <Link to="/category/foot">{category.name}</Link> (3 posts)
+            <Link to={'/category/' + category.path}>{category.name}</Link> (3 posts)
           </li>
           ))}
         </ul>

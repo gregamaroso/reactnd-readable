@@ -1,19 +1,51 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
+import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
-export default class Category extends Component {
+import { postsFetchData } from '../store/Category/actions';
+
+class Category extends Component {
+  componentDidMount() {
+    const { match } = this.props;
+    const category = match.params.category;
+    this.props.fetchData(category);
+  }
+
   render() {
+    const { isLoading, hasErrored, posts } = this.props;
+
     return (
       <div>
         <p className="temp-description">This page will have a list of all posts for a single cateogry along with some metadata for each.</p>
 
-        <p><Link to="/">Home</Link> &raquo; [ category ]</p>
+        <div className="breadcrumb"><Link to="/">Home</Link> &raquo; [ category ]</div>
+
         <ul>
-          <li><Link to="/post/1">Post 1</Link> (1024 comments, last comment 12/1/2016)</li>
-          <li><Link to="/post/2">Post 2</Link> (856 comments, last comment 2/17/2017)</li>
-          <li><Link to="/post/3">Post 3</Link> (200 comments, last comment 4/20/2017)</li>
+          {posts.map((post) => (
+          <li key={post.id}>
+            <Link to={'/post/' + post.id}>{post.title}</Link> (1024 comments, last comment 12/1/2016)
+          </li>
+          ))}
         </ul>
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts,
+    hasErrored: state.postsHasErrored,
+    isLoading: state.postsAreLoading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchData: (category) => dispatch(postsFetchData(category))
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Category));

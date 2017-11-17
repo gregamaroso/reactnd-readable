@@ -17,17 +17,9 @@ class App extends Component {
         <Header />
 
         <div className="app__content">
-          <Route exact path="/" render={() => (
-            <Categories />
-          )} />
-
-          <Route path="/category" render={() => (
-            <Category />
-          )} />
-
-          <Route path="/post" render={() => (
-            <Post />
-          )} />
+          <Route exact path="/" component={Categories} />
+          <Route path="/category/:category" component={Category} />
+          <Route path="/post" component={Post} />
         </div>
 
         <Footer />
