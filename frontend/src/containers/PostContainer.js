@@ -25,8 +25,8 @@ class PostContainer extends Component {
   render() {
     const { categories, posts, comments, hasErrored, isLoading } = this.props;
     const postId = this.getPostId();
-    const post = posts ? posts.find((p) => p.id === postId) : {};
-    const category = (categories && post) ? categories.find((cat) => cat.path === post.category) : {};
+    const post = (posts && posts.length) ? posts.find((p) => p.id === postId) : {};
+    const category = (categories && post.category && categories.length) ? categories.find((cat) => cat.path === post.category) : {};
 
     // Create a local props var to dynamically sent to the Posts component
     const props = {

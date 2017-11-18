@@ -26,7 +26,7 @@ class PostsContainer extends Component {
     // If we're on a category page, then filter out the posts from other categories
     if (isSingleCategoryPage) {
       posts = posts.filter((post) => {
-        return (post.category !== categoryPath);
+        return (post.category === categoryPath);
       });
     }
 

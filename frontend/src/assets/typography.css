@@ -7,11 +7,13 @@ body {
   font-family: "Couriier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
   font-weight: normal;
   font-size: 1.4em;
+  line-height: 1.6em;
 }
 
 a {
   text-decoration: none;
   outline: none;
+  color: #ae0000;
 }
 
 h1 {
@@ -37,4 +39,18 @@ h4 {
 
 .error {
   color: red;
+}
+
+.post__meta,
+.post__comment {
+  color: #696969;
+  font-size: .9em;
+}
+
+.post__meta-author,
+.post__comment-meta-author {
+  text-transform: uppercase;
+  color: #000;
+  font-weight: bold;
+  font-size: 1.1em;
 }

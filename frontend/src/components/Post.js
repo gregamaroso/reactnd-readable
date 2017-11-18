@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
+import { transformEpochToDate } from '../util/helpers';
 import Breadcrumb from './Breadcrumb';
 import Error from './Error';
+import Comment from './Comment';
+import PostVote from './PostVote';
 
 export default class Post extends Component {
   render() {
     const { category, post, comments, isLoading, hasErrored } = this.props;
+    const { title, body, author, timestamp, voteScore } = post;
+    const date = transformEpochToDate(timestamp);
 
     const breadcrumbItems = post
       ? [
@@ -32,18 +37,32 @@ export default class Post extends Component {
         {!isLoading && !hasErrored && (
           <div className="post__content">
             {post && (
-              <div className="post__content">
-                post.body
-              </div>
+              <article>
+                <h1>{title}</h1>
+
+                <div className="post__meta">
+                  <div className="post__meta-author">
+                    {author}
+                  </div>
+
+                  <div className="post__meta-date">
+                    {date}
+                  </div>
+                </div>
+
+                <div className="post__body">
+                  {body}
+                </div>
+
+                 <PostVote score={voteScore} />
+              </article>
             )}
 
-            <ul className="post__comments">
+            <div className="post__comments">
             {comments.map((comment) => (
-              <li key={comment.id}>
-                {comment.body}
-              </li>
+              <Comment comment={comment} />
             ))}
-            </ul>
+            </div>
           </div>
         )}
       </div>

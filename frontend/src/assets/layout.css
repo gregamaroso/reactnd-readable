@@ -3,6 +3,23 @@ body {
   padding: 0;
 }
 
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+* html .clearfix {
+  zoom: 1;
+}
+
+*:first-child+html .clearfix {
+  zoom: 1;
+}
+
 /* Unordered Lists */
 
 ul,
@@ -27,8 +44,7 @@ ul ul {
 
 /* App */
 
-.app {
-}
+.app { }
 
 .app__content {
   width: 80%;
@@ -36,13 +52,19 @@ ul ul {
   padding: 20px;
 }
 
+/*
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+*/
 
 .breadcrumb {
-  padding-bottom: 20px;
+  padding: 0 0 20px 0;
+
+  /* override boostrap */
+  margin: 0;
+  background-color: transparent;
 }
 
 .messages {
@@ -59,4 +81,42 @@ ul ul {
 }
 
 .post__comments {
+  border-top: 1px solid #000;
+  margin: 40px 0 0 0;
+  padding: 40px 0 0 0;
+}
+
+.post__comment {
+  padding-bottom: 30px;
+  clear: both;
+}
+
+.post__meta {
+  padding-bottom: 20px;
+}
+
+.post__comment-body {
+  padding-bottom: 12px;
+}
+
+.post__comment-meta-date {
+  white-space: nowrap;
+}
+
+.post__voting {
+  padding: 10px 0;
+}
+
+@media (min-width: 768px) {
+  .post__comment-body {
+    float: left;
+    width: 70%;
+    padding-bottom: 0;
+  }
+
+  .post__comment-meta {
+    float: right;
+    text-align: right;
+    width: 20%;
+  }
 }

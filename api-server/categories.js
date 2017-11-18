@@ -1,24 +1,9 @@
 const clone = require('clone')
 const config = require('./config')
+const data = require('./hydrate/data')
 
 let db = {}
-
-const defaultData = {
-  categories: [
-      {
-        name: 'React',
-        path: 'react'
-      },
-      {
-        name: 'Redux',
-        path: 'redux'
-      },
-      {
-        name: 'Udacity',
-        path: 'udacity'
-      }
-  ]
-}
+const defaultData = data.categories
 
 function getData (token) {
   //Each token has it's own copy of the DB. The token in this case is like an app id.
