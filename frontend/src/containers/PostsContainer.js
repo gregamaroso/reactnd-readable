@@ -14,14 +14,18 @@ class PostsContainer extends Component {
     const { isLoading, hasErrored, categories } = this.props;
     let { posts } = this.props;
 
+    // Create an array of post objects from the prop
+    posts = posts.allIds.map((id) => {
+      return posts.byId[id];
+    });
+
     // If we're showing the posts for a single category, extract that path here
     const categoryPath = this.getCategoryPath();
-    const isSingleCategoryPage = (categories && categoryPath.length);
+    const isSingleCategoryPage = (categories && categories.byId && categoryPath.length);
 
     // The category object is just 1 element out of the categories object.
     // Rather than duplicate the data in state, we'll just extract it here as a prop.
-    const category = isSingleCategoryPage ?
-      categories.find((cat) => cat.path === categoryPath) : {};
+    const category = isSingleCategoryPage ? categories['byId'][categoryPath] : {};
 
     // If we're on a category page, then filter out the posts from other categories
     if (isSingleCategoryPage) {
@@ -48,8 +52,8 @@ class PostsContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    posts: state.posts,
     categories: state.categories,
+    posts: state.posts,
     hasErrored: state.postsHasErrored,
     isLoading: state.postsAreLoading,
   };

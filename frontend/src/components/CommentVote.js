@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 
 export default class CommentVote extends Component {
+  handleVote = (id, dir) => {
+    // dispatch to action creator
+  }
+
   render() {
-    const { score } = this.props;
+    const { commentId, voteScore } = this.props;
 
     return (
       <div className="post__voting">
-        Current Score: {score}
+        Current Score: {voteScore}
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="#"><span className="glyphicon glyphicon-thumbs-up"></span></a>
+        <span className="glyphicon glyphicon-thumbs-up" onClick={(e) => this.handleVote(commentId, 'up')} key="vote-up"></span>
         &nbsp;&nbsp;
-        <a href="#"><span className="glyphicon glyphicon-thumbs-down"></span></a>
+        <span className="glyphicon glyphicon-thumbs-down" onClick={(e) => this.handleVote(commentId, 'down')} key="vote-down"></span>
       </div>
     );
   }

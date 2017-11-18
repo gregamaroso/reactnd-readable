@@ -4,6 +4,7 @@ import {
   POSTS_ARE_LOADING
 } from './constants';
 
+
 /**
  * Reducers
  *
@@ -30,10 +31,17 @@ export function postsAreLoading(state = false, action) {
   }
 }
 
-export function posts(state = [], action) {
+export function posts(state = {byId: {}, allIds: []}, action) {
   switch (action.type) {
     case POSTS_FETCH_SUCCESS:
-      return action.posts;
+      const { posts } = action;
+      return {
+        byId: posts.filter((p) => p.deleted === false).reduce((a, p) => {
+          a[p.id] = p;
+          return a;
+        }, {}),
+        allIds: posts.map((p) => p.id)
+      };
 
     default:
       return state;

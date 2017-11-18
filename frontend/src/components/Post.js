@@ -54,13 +54,13 @@ export default class Post extends Component {
                   {body}
                 </div>
 
-                 <PostVote score={voteScore} />
+                 <PostVote post={post} />
               </article>
             )}
 
             <div className="post__comments">
             {comments.map((comment) => (
-              <Comment comment={comment} />
+              <Comment comment={comment} key={comment.id} />
             ))}
             </div>
           </div>

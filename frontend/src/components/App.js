@@ -22,7 +22,11 @@ import '../assets/typography.css';
 class App extends Component {
   componentDidMount() {
     // Fetch all categories and posts when the app mounts, then add the data to the store.
-    this.props.fetchData();
+    const { categories, posts } = this.props;
+
+    if (!categories.allIds.length || !posts.allIds.length) {
+      this.props.fetchData();
+    }
   }
 
   render() {
@@ -56,6 +60,8 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
+    categories: state.categories,
+    posts: state.posts,
     hasErrored: (state.categoriesHasErrored || state.postsHasErrored),
     isLoading: (state.categoriesAreLoading || state.postsAreLoading),
   };

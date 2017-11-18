@@ -31,11 +31,17 @@ export function categoriesAreLoading(state = false, action) {
   }
 }
 
-// TODO: have this reducer merge state with existing comments
-export function categories(state = [], action) {
+export function categories(state = {byId: {}, allIds: []}, action) {
   switch (action.type) {
     case CATEGORIES_FETCH_SUCCESS:
-      return action.categories;
+      const { categories } = action;
+      return {
+        byId: categories.reduce((a, c) => {
+          a[c.path] = c;
+          return a;
+        }, {}),
+        allIds: categories.map((c) => c.path)
+      };
 
     default:
       return state;

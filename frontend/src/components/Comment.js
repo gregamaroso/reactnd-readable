@@ -6,7 +6,7 @@ import { transformEpochToDate } from '../util/helpers';
 export default class Comment extends Component {
   render() {
     const { comment } = this.props;
-    const { body, author, timestamp, voteScore } = comment;
+    const { id, body, author, timestamp, voteScore } = comment;
     const date = transformEpochToDate(timestamp);
 
     return (
@@ -14,7 +14,7 @@ export default class Comment extends Component {
         <div className="post__comment-body">
           {body}
 
-          <CommentVote score={voteScore} />
+          <CommentVote commentId={id} voteScore={voteScore} />
         </div>
 
         <div className="post__comment-meta">
