@@ -1,7 +1,6 @@
-import { getCategory, getCategories } from '../../util/api';
+import API from '../../util/api';
 
 import {
-  CATEGORY_FETCH_SUCCESS,
   CATEGORIES_FETCH_SUCCESS,
   CATEGORIES_HAS_ERRORED,
   CATEGORIES_ARE_LOADING
@@ -26,15 +25,7 @@ export function categoriesAreLoading(bool) {
   }
 }
 
-export function categoryFetchDataSuccess(category) {
-  return {
-    type: CATEGORY_FETCH_SUCCESS,
-    category
-  }
-}
-
-export function categoriesFetchDataSuccess(allCategories) {
-  const { categories } = allCategories;
+export function categoriesFetchDataSuccess(categories) {
   return {
     type: CATEGORIES_FETCH_SUCCESS,
     categories
@@ -45,25 +36,15 @@ export function categoriesFetchDataSuccess(allCategories) {
  * Action Creators
  */
 
-export function categoriesFetchData(path = '') {
+export function categoriesFetchData() {
   return (dispatch) => {
     dispatch(categoriesAreLoading(true));
 
-    if (path.length) {
-      getCategory(path)
-        .then((category) => {
-          dispatch(categoriesAreLoading(false));
-          dispatch(categoryFetchDataSuccess(category));
-        })
-        .catch(() => dispatch(categoriesHasErrored(true)));
-    }
-    else {
-      getCategories()
-        .then((categories) => {
-          dispatch(categoriesAreLoading(false));
-          dispatch(categoriesFetchDataSuccess(categories));
-        })
-        .catch(() => dispatch(categoriesHasErrored(true)));
-    }
+    API.getCategories()
+      .then((categories) => {
+        dispatch(categoriesAreLoading(false));
+        dispatch(categoriesFetchDataSuccess(categories));
+      })
+      .catch(() => dispatch(categoriesHasErrored(true)));
   }
 }

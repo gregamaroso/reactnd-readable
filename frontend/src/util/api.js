@@ -28,6 +28,63 @@ const API = {
     return fetch(`${base}/${category}/posts`, { headers });
   },
 
+  getPostPromise(id) {
+    const { base, headers } = this;
+    return fetch(`${base}/posts/${id}`, { headers });
+  },
+
+  getCommentsByPostIdPromise(postid) {
+    const { base, headers } = this;
+    return fetch(`${base}/posts/${postid}/comments`, { headers });
+  },
+
+  /**
+   * Combo Requests
+   */
+
+ // Retrieve all categories and posts
+ //
+ // Returns:
+ // {
+ //    categories: [{}, {}]
+ //    posts: [{}, {}, {}]
+ // }
+ getCategoriesAndPosts() {
+   const promises = [
+     this.getCategoriesPromise(),
+     this.getPostsPromise(),
+   ];
+
+   return Promise.all(promises)
+     .then(responses => {
+       let isError = false;
+       let messages = [];
+
+       // const isError = responses.some(element => !element.ok);
+       responses.forEach(res => {
+         if (!res.ok) {
+           isError = true;
+           messages.push(res.statusText);
+         }
+       });
+
+       if (isError) {
+         throw Error(messages.join("\n"));
+       }
+
+       return responses;
+     })
+     .then(responses => Promise.all(responses.map(res => res.json())))
+     .then(responses => {
+       const [ categories, posts ] = responses;
+
+       return {
+         posts,
+         categories: categories.categories,
+       };
+     });
+  },
+
   /**
    * Categories
   */
@@ -57,7 +114,8 @@ const API = {
         }
         return res;
       })
-      .then((res) => res.json());
+      .then((res) => res.json())
+      .then((res) => res.categories);
   },
 
   /**
@@ -70,84 +128,19 @@ const API = {
   // {
   //    posts: [{}, {}, {}]
   // }
-  getPosts() {
-    const promises = [
-      this.getCategoriesPromise(),
-      this.getPostsPromise(),
-    ];
+  getPosts(category = '') {
+    const pp = category.length ?
+      this.getPostsByCategoryPromise(category) :
+      this.getPostsPromise();
 
-    return Promise.all(promises)
-      .then(responses => {
-        let isError = false;
-        let messages = [];
-
-        // const isError = responses.some(element => !element.ok);
-        responses.forEach(res => {
-          if (!res.ok) {
-            isError = true;
-            messages.push(res.statusText);
-          }
-        });
-
-        if (isError) {
-          throw Error(messages.join("\n"));
+    return pp
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
         }
-
-        return responses;
+        return res;
       })
-      .then(responses => Promise.all(responses.map(res => res.json())))
-      .then(responses => {
-        const [ categories, posts ] = responses;
-
-        return {
-          posts,
-          categories: categories.categories,
-        };
-      });
-  },
-
-  // Retrieve all posts for a given category
-  //
-  // Returns:
-  // {
-  //    categories: [{}]
-  //    posts: [{}, {}, {}]
-  // }
-  getPostsByCategory(categoryPath = 'nonexistentcategory') {
-    const promises = [
-      this.getCategoriesPromise(),
-      this.getPostsByCategoryPromise(categoryPath),
-    ];
-
-    return Promise.all(promises)
-      .then(responses => {
-        let isError = false;
-        let messages = [];
-
-        // const isError = responses.some(element => !element.ok);
-        responses.forEach(res => {
-          if (!res.ok) {
-            isError = true;
-            messages.push(res.statusText);
-          }
-        });
-
-        if (isError) {
-          throw Error(messages.join("\n"));
-        }
-
-        return responses;
-      })
-      .then(responses => Promise.all(responses.map(res => res.json())))
-      .then(responses => {
-        const [ categories, posts ] = responses;
-        const category = categories.categories.find(cat => cat.path === categoryPath);
-
-        return {
-          posts,
-          categories: [ category ],
-        };
-      });
+      .then((res) => res.json());
   },
 
   getPost(id) {
@@ -159,6 +152,16 @@ const API = {
   /**
    * Comments
    */
+  getCommentsByPostId(postid) {
+    return this.getCommentsByPostIdPromise(postid)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then((res) => res.json());
+  }
 }
 
 export default API;

@@ -1,11 +1,56 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
+
+// App initialization
+import { commentsFetchData } from '../store/comments/actions';
 
 import Post from '../components/Post';
 
 class PostContainer extends Component {
+  getPostId() {
+    const params = this.props.match.params;
+    return params.postid;
+  }
+
+  componentDidMount() {
+    // Load comments on demand
+    const postId = this.getPostId();
+    this.props.fetchData(postId);
+  }
+
   render() {
-    return <Post />
+    const { categories, posts, comments, hasErrored, isLoading } = this.props;
+    const postId = this.getPostId();
+    const post = posts ? posts.find((p) => p.id === postId) : {};
+    const category = (categories && post) ? categories.find((cat) => cat.path === post.category) : {};
+
+    // Create a local props var to dynamically sent to the Posts component
+    const props = {
+      isLoading,
+      hasErrored,
+      category,
+      post,
+      comments,
+    };
+    return <Post {...props} />;
   }
 }
 
-export default PostContainer;
+function mapStateToProps(state) {
+  return {
+    categories: state.categories,
+    posts: state.posts,
+    comments: state.comments,
+    hasErrored: state.commentsHasErrored,
+    isLoading: (state.commentsAreLoading || state.categoriesAreLoading || state.postsAreLoading),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchData: (postId) => dispatch(commentsFetchData(postId))
+  };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostContainer));

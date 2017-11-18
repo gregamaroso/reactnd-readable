@@ -25,47 +25,24 @@ export function postsAreLoading(bool) {
   }
 }
 
-export function postsFetchDataSuccess({ posts, categories }) {
+export function postsFetchDataSuccess(posts) {
   return {
     type: POSTS_FETCH_SUCCESS,
-    posts,
-    categories,
+    posts
   };
 }
 
 /**
  * Action Creators
- *
- * TODO: combine postsFetchAllData and postsFetchCategoryData into
- *       one action creator after cosolidating the API methods
  */
 
-export function postsFetchAllData() {
+export function postsFetchData(category) {
   return (dispatch) => {
     dispatch(postsAreLoading(true));
 
-    API.getPosts()
+    API.getPosts(category)
       .then((res) => {
 
-        // Can we combine these 2 so that we only render once?
-        dispatch(postsAreLoading(false));
-        dispatch(postsFetchDataSuccess(res));
-      })
-      .catch((e) => {
-        dispatch(postsAreLoading(false));
-        dispatch(postsHasErrored(true))
-      });
-  };
-}
-
-export function postsFetchCategoryData(categoryPath) {
-  return (dispatch) => {
-    dispatch(postsAreLoading(true));
-
-    API.getPostsByCategory(categoryPath)
-      .then((res) => {
-
-        // Can we combine these 2 so that we only render once?
         dispatch(postsAreLoading(false));
         dispatch(postsFetchDataSuccess(res));
       })

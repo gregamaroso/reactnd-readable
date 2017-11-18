@@ -1,5 +1,4 @@
 import {
-  CATEGORY_FETCH_SUCCESS,
   CATEGORIES_FETCH_SUCCESS,
   CATEGORIES_HAS_ERRORED,
   CATEGORIES_ARE_LOADING
@@ -32,16 +31,7 @@ export function categoriesAreLoading(state = false, action) {
   }
 }
 
-export function category(state = {}, action) {
-  switch (action.type) {
-    case CATEGORY_FETCH_SUCCESS:
-      return action.category;
-
-    default:
-      return state;
-  }
-}
-
+// TODO: have this reducer merge state with existing comments
 export function categories(state = [], action) {
   switch (action.type) {
     case CATEGORIES_FETCH_SUCCESS:

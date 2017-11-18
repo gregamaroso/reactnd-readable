@@ -1,32 +1,49 @@
 import React, { Component } from 'react';
+import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
 import Breadcrumb from './Breadcrumb';
+import Error from './Error';
 
 export default class Post extends Component {
   render() {
-    return (
-      <div>
-        <p>Add breadcrumb here</p>
-        <div className="breadcrumb"><Link to="/">Home</Link> &raquo; <Link to="/category/foo">[ category linked ]</Link> &raquo; [ post name ]</div>
+    const { category, post, comments, isLoading, hasErrored } = this.props;
 
-        <p>Add the initial post text here. Add the initial post text here. Add the initial post text here. Add the initial post text here. Add the initial post text here.</p>
-        <ul>
-          <li>Comment #1 (vote: up | down)
-            <ul>
-              <li>Sub Comment #1 (vote: up | down)</li>
-              <li>Sub Comment #2 (vote: up | down)</li>
+    const breadcrumbItems = post
+      ? [
+        (<Link to="/" key="home">Home</Link>),
+        (<Link to={'/' + category.path} key="category">{category.name}</Link>),
+        post.title
+      ]
+      : [];
+
+    return (
+      <div className="post">
+        <Breadcrumb breadcrumb={breadcrumbItems} />
+
+        {isLoading && (
+          <Loading delay={200} type='spin' color='#222' className='loading' />
+        )}
+
+        {hasErrored && (
+          <Error message="There's been an error loading posts" />
+        )}
+
+        {!isLoading && !hasErrored && (
+          <div className="post__body">
+            {post && (
+              post.body
+            )}
+
+            <ul className="comments">
+            {comments.map((comment) => (
+              <li key={comment.id}>
+                {comment.body}
+              </li>
+            ))}
             </ul>
-          </li>
-          <li>Comment #2 (vote: up | down)</li>
-          <li>Comment #3 (vote: up | down)
-            <ul>
-              <li>Sub Comment #1 (vote: up | down)</li>
-              <li>Sub Comment #2 (vote: up | down)</li>
-            </ul>
-          </li>
-          <li>Comment #4 (vote: up | down)</li>
-        </ul>
+          </div>
+        )}
       </div>
     )
   }

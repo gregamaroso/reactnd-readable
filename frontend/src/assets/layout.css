@@ -24,6 +24,10 @@ a {
   color: #505050;
 }
 
+.error {
+  color: red;
+}
+
 /* Unordered Lists */
 
 ul,
@@ -61,11 +65,13 @@ ul ul {
   to { transform: rotate(360deg); }
 }
 
-.temp-description {
+.breadcrumb {
+  padding-bottom: 20px;
+}
+
+.messages {
   display: block;
   padding: 20px;
   margin-bottom: 40px;
   background-color: #ebebeb;
-  color: red;
-  font-style: italic;
 }
