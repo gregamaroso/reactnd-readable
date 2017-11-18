@@ -33,7 +33,7 @@ export default class Posts extends Component {
         <ul className="posts">
           {posts.map((post) => (
           <li key={post.id}>
-            <Link to={'/' + post.category + '/' + post.id}>{post.title}</Link> (1024 comments, last comment 12/1/2016)
+            <h3><Link to={'/' + post.category + '/' + post.id}>{post.title}</Link> ({post.commentCount} comments)</h3>
           </li>
           ))}
         </ul>

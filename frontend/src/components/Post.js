@@ -30,12 +30,14 @@ export default class Post extends Component {
         )}
 
         {!isLoading && !hasErrored && (
-          <div className="post__body">
+          <div className="post__content">
             {post && (
-              post.body
+              <div className="post__content">
+                post.body
+              </div>
             )}
 
-            <ul className="comments">
+            <ul className="post__comments">
             {comments.map((comment) => (
               <li key={comment.id}>
                 {comment.body}

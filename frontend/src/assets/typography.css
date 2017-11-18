@@ -1,0 +1,40 @@
+
+html {
+  font-size: 62.5%
+}
+
+body {
+  font-family: "Couriier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+  font-weight: normal;
+  font-size: 1.4em;
+}
+
+a {
+  text-decoration: none;
+  outline: none;
+}
+
+h1 {
+  font-size: 1.8em;
+}
+
+h2 {
+  font-size: 1.6em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4 {
+  font-size: 1.2em;
+}
+
+.breadcrumb {
+  font-size: .9em;
+  color: #505050;
+}
+
+.error {
+  color: red;
+}

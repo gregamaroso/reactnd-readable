@@ -14,9 +14,12 @@ class PostContainer extends Component {
   }
 
   componentDidMount() {
-    // Load comments on demand
-    const postId = this.getPostId();
-    this.props.fetchData(postId);
+    // Load comments on demand, but only if we don't have them already
+    const { comments } = this.props;
+
+    if (comments.length === 0) {
+      this.props.fetchData(this.getPostId());
+    }
   }
 
   render() {

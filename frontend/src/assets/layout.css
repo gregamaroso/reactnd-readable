@@ -3,37 +3,13 @@ body {
   padding: 0;
 }
 
-/* Typography */
-
-html {
-  font-size: 62.5%
-}
-
-body {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 1.4em;
-}
-
-a {
-  text-decoration: none;
-  outline: none;
-}
-
-.breadcrumb {
-  font-size: .9em;
-  color: #505050;
-}
-
-.error {
-  color: red;
-}
-
 /* Unordered Lists */
 
 ul,
 li {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  list-style-type: none;
+  margin: 0;
+  padding: 10px 0;
 }
 
 li:first-child {
@@ -74,4 +50,13 @@ ul ul {
   padding: 20px;
   margin-bottom: 40px;
   background-color: #ebebeb;
+}
+
+/* Posts */
+
+.post__content {
+  margin: 10px 0 20px;
+}
+
+.post__comments {
 }

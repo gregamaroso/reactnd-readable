@@ -28,7 +28,7 @@ export function commentsAreLoading(bool) {
 export function commentsFetchDataSuccess(comments) {
   return {
     type: COMMENTS_FETCH_SUCCESS,
-    comments
+    comments: comments.filter((comment) => comment.deleted === false)
   };
 }
 

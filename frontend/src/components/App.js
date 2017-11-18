@@ -17,6 +17,7 @@ import PostsContainer from '../containers/PostsContainer';
 import PostContainer from '../containers/PostContainer';
 
 import '../assets/layout.css';
+import '../assets/typography.css';
 
 class App extends Component {
   componentDidMount() {

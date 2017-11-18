@@ -28,7 +28,7 @@ export function postsAreLoading(bool) {
 export function postsFetchDataSuccess(posts) {
   return {
     type: POSTS_FETCH_SUCCESS,
-    posts
+    posts: posts.filter((post) => post.deleted === false)
   };
 }
 
