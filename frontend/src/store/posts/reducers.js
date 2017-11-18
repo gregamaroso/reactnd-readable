@@ -5,6 +5,11 @@ import {
 } from './constants';
 
 
+const intialPostsState = {
+  posts: [],
+  categories: [],
+};
+
 /**
  * Reducers
  *
@@ -31,10 +36,15 @@ export function postsAreLoading(state = false, action) {
   }
 }
 
-export function posts(state = [], action) {
+export function posts(state = intialPostsState, action) {
   switch (action.type) {
     case POSTS_FETCH_SUCCESS:
-      return action.posts;
+      const { posts, categories } = action;
+      return {
+        ...state,
+        posts,
+        categories,
+      };
 
     default:
       return state;

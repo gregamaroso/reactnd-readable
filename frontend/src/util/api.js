@@ -2,130 +2,163 @@
  * README: https://github.com/udacity/reactnd-project-readable-starter/blob/master/api-server/README.md
  */
 
-const api = 'http://localhost:3001';
-const headers = {
-  'Authorization': 'blah',
-};
+const API = {
+  base: 'http://localhost:3001',
 
-/**
- * Promises
- */
+  headers: {
+    'Authorization': 'blah',
+  },
 
-function getCategoriesPromise() {
- return fetch(`${api}/categories`, { headers });
-}
+  /**
+   * Promises
+   */
 
-function getPostsPromise() {
- return fetch(`${api}/posts`, { headers });
-}
+  getCategoriesPromise() {
+    const { base, headers } = this;
+    return fetch(`${base}/categories`, { headers });
+  },
 
-function getPostsByCategoryPromise(category) {
-  return fetch(`${api}/${category}/posts`, { headers });
-}
+  getPostsPromise() {
+    const { base, headers } = this;
+    return fetch(`${base}/posts`, { headers });
+  },
 
-/**
- * Categories
- */
+  getPostsByCategoryPromise(category) {
+    const { base, headers } = this;
+    return fetch(`${base}/${category}/posts`, { headers });
+  },
 
-// Retrieve a single category object based on the 'path' key
-//
-// Returns:
-// {
-//    category: {}
-// }
-export function getCategory(path) {
-  return getCategories()
-    .then((res) => res.find(r => r.path === path));
-}
+  /**
+   * Categories
+  */
 
-// Retrieve all categories
-//
-// Returns:
-// {
-//    categories: [{}, {}, {}]
-// }
-export function getCategories() {
-  return getCategoriesPromise()
-    .then((res) => {
-      if (!res.ok) {
-        throw Error(res.statusText);
-      }
-      return res;
-    })
-    .then((res) => res.json());
-}
+  // Retrieve a single category object based on the 'path' key
+  //
+  // Returns:
+  // {
+  //    category: {}
+  // }
+  getCategory(path) {
+    return this.getCategories()
+      .then((res) => res.find(r => r.path === path));
+  },
 
-/**
- * Posts
- */
-
-// Retrieve all posts
-//
-// Returns:
-// {
-//    posts: [{}, {}, {}]
-// }
-export function getPosts() {
-  return getPostsPromise()
-    .then((res) => {
-      if (!res.ok) {
-        throw Error(res.statusText);
-      }
-      return res;
-    })
-    .then((res) => res.json());
-}
-
-// Retrieve all posts for a given category
-//
-// Returns:
-// {
-//    category: {}
-//    posts: [{}, {}, {}]
-// }
-export function getPostsByCategory(categoryPath = 'nonexistentcategory') {
-  const promises = [
-    getCategoriesPromise(),
-    getPostsByCategoryPromise(categoryPath),
-  ]
-
-  return Promise.all(promises)
-    .then(responses => {
-      let isError = false;
-      let messages = [];
-
-      // const isError = responses.some(element => !element.ok);
-      responses.forEach(res => {
+  // Retrieve all categories
+  //
+  // Returns:
+  // {
+  //    categories: [{}, {}, {}]
+  // }
+  getCategories() {
+    return this.getCategoriesPromise()
+      .then((res) => {
         if (!res.ok) {
-          isError = true;
-          messages.push(res.statusText);
+          throw Error(res.statusText);
         }
+        return res;
+      })
+      .then((res) => res.json());
+  },
+
+  /**
+   * Posts
+   */
+
+  // Retrieve all posts
+  //
+  // Returns:
+  // {
+  //    posts: [{}, {}, {}]
+  // }
+  getPosts() {
+    const promises = [
+      this.getCategoriesPromise(),
+      this.getPostsPromise(),
+    ];
+
+    return Promise.all(promises)
+      .then(responses => {
+        let isError = false;
+        let messages = [];
+
+        // const isError = responses.some(element => !element.ok);
+        responses.forEach(res => {
+          if (!res.ok) {
+            isError = true;
+            messages.push(res.statusText);
+          }
+        });
+
+        if (isError) {
+          throw Error(messages.join("\n"));
+        }
+
+        return responses;
+      })
+      .then(responses => Promise.all(responses.map(res => res.json())))
+      .then(responses => {
+        const [ categories, posts ] = responses;
+
+        return {
+          posts,
+          categories: categories.categories,
+        };
       });
+  },
 
-      if (isError) {
-        throw Error(messages.join("\n"));
-      }
+  // Retrieve all posts for a given category
+  //
+  // Returns:
+  // {
+  //    categories: [{}]
+  //    posts: [{}, {}, {}]
+  // }
+  getPostsByCategory(categoryPath = 'nonexistentcategory') {
+    const promises = [
+      this.getCategoriesPromise(),
+      this.getPostsByCategoryPromise(categoryPath),
+    ];
 
-      return responses;
-    })
-    .then(responses => Promise.all(responses.map(res => res.json())))
-    .then(responses => {
-      const [ categories, posts ] = responses;
-      const category = categories.categories.find(cat => cat.path === categoryPath);
+    return Promise.all(promises)
+      .then(responses => {
+        let isError = false;
+        let messages = [];
 
-      return {
-        posts,
-        category,
-      };
-    });
+        // const isError = responses.some(element => !element.ok);
+        responses.forEach(res => {
+          if (!res.ok) {
+            isError = true;
+            messages.push(res.statusText);
+          }
+        });
+
+        if (isError) {
+          throw Error(messages.join("\n"));
+        }
+
+        return responses;
+      })
+      .then(responses => Promise.all(responses.map(res => res.json())))
+      .then(responses => {
+        const [ categories, posts ] = responses;
+        const category = categories.categories.find(cat => cat.path === categoryPath);
+
+        return {
+          posts,
+          categories: [ category ],
+        };
+      });
+  },
+
+  getPost(id) {
+  },
+
+  updatePost(id) {
+  },
+
+  /**
+   * Comments
+   */
 }
 
-export function getPost(id) {
-}
-
-export function updatePost(id) {
-}
-
-/**
- * Comments
- */
+export default API;

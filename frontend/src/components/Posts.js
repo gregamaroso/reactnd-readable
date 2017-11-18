@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
-export default class Category extends Component {
+import Breadcrumb from './Breadcrumb';
+
+export default class Posts extends Component {
   render() {
-    const { isLoading, hasErrored, posts, category } = this.props;
+    const { isLoading, hasErrored, posts, category, showCategoryBreadcrumb } = this.props;
 
     if (isLoading) {
       return <Loading delay={200} type='spin' color='#222' className='loading' />
@@ -14,11 +16,15 @@ export default class Category extends Component {
       return `<p>You suck. Try again.</p>`;
     }
 
+    let breadcrumbItems = [];
+    if (showCategoryBreadcrumb) {
+      breadcrumbItems.push(<Link to="/">Home</Link>);
+      breadcrumbItems.push(category.name);
+    }
+
     return (
       <div>
-        <p className="temp-description">This page will have a list of all posts for a single cateogry along with some metadata for each.</p>
-
-        <div className="breadcrumb"><Link to="/">Home</Link> &raquo; [ {category.name} ]</div>
+        {showCategoryBreadcrumb && (<Breadcrumb breadcrumb={breadcrumbItems} />)}
 
         <ul>
           {posts.map((post) => (
