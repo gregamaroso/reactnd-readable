@@ -9,7 +9,7 @@ import Posts from '../components/Posts';
 
 class PostsContainer extends Component {
   render() {
-    const { category, posts, isLoading, hasErrored, categories, handlePostsSort } = this.props;
+    const { category, posts, isLoading, hasErrored, handlePostsSort } = this.props;
 
     // Boolean for whether to show the <category> breadcrumb
     const showCategoryBreadcrumb = !!category.name;

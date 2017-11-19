@@ -63,22 +63,19 @@ export function posts(state = defaultPostsState, action) {
      const { sortKey } = action;
 
      // score_desc, score_asc, date_desc, date_asc
-     const allPosts = Object.assign({}, state.byId);
+     const newState = Object.assign({}, state);
+     const allPosts = newState.byId;
      const key = sortKey.indexOf('score') === 0 ? 'voteScore' : 'timestamp';
-     const dir = sortKey.indexOf('_desc') === 0 ? 'down' : 'up';
+     const dir = sortKey.indexOf('_desc') !== -1 ? 'down' : 'up';
 
-console.log(key, dir);
-     state.allIds.sort((a, b) => {
-       if (dir === 'down') {
-         return allPosts[a][key] + allPosts[b][key];
-       }
-       else {
-         return allPosts[a][key] - allPosts[b][key];
-       }
+     newState.allIds.sort((a, b) => {
+       const comp = dir === 'down' ?
+         allPosts[a][key] < allPosts[b][key] :
+         allPosts[a][key] > allPosts[b][key];
+       return (comp) ? 1 : -1;
      });
-console.log(state.allIds);
 
-     return state;
+     return newState;
 
     default:
       return state;
