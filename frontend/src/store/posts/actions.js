@@ -2,6 +2,7 @@ import API from '../../util/api';
 
 import {
   POST_VOTE_SUCCESS,
+  POST_UPDATE_SUCCESS,
   POSTS_FETCH_SUCCESS,
   POSTS_HAS_ERRORED,
   POSTS_ARE_LOADING
@@ -30,6 +31,13 @@ export function postsFetchDataSuccess(posts) {
   return {
     type: POSTS_FETCH_SUCCESS,
     posts
+  };
+}
+
+export function postUpdateSuccess(post) {
+  return {
+    type: POST_UPDATE_SUCCESS,
+    post
   };
 }
 
@@ -67,12 +75,14 @@ export function postsHandleVote(id, direction) {
   };
 }
 
-export function updatePost(postId, obj) {
-  return (dispatch, getState) => {
-    console.log(postId);
-    console.log(obj);
-    console.log( getState() );
+export function updatePost(origPost, changes) {
+  return (dispatch) => {
+    const post = {
+      ...origPost,
+      ...changes
+    };
 
-    // TODO: We have the variables to update a post. Need to create an api method.
+    API.updatePost(origPost.id, post)
+      .then((newPost) => dispatch(postVoteSuccess(newPost)));
   };
 }

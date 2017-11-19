@@ -2,36 +2,30 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 
-import { updatePost } from '../store/posts/actions';
 import { commentsFetchData } from '../store/comments/actions';
 import Post from '../components/Post';
 
-function getPostIdFromParams(props) {
+function getPostIdFromProps(props) {
   const params = props.match.params;
   return params.postid;
 }
 
 class PostContainer extends Component {
-  getPostId() {
-    const params = this.props.match.params;
-    return params.postid;
-  }
-
   componentDidMount() {
     // Load comments on demand, but only if we don't have them already
     const { comments } = this.props;
 
     if (!comments.allIds.length) {
-      this.props.fetchData(this.getPostId());
+      this.props.fetchData(getPostIdFromProps(this.props));
     }
   }
 
   render() {
-    const { categories, posts, hasErrored, isLoading, updatePost } = this.props;
+    const { categories, posts, hasErrored, isLoading } = this.props;
     let { comments } = this.props;
-    const postId = getPostIdFromParams(this.props);
+    const postId = getPostIdFromProps(this.props);
 
-    // Create an array of post objects from the prop
+    // Create an array of post objects using the state prop
     comments = comments.allIds.map((id) => {
       return comments.byId[id];
     });
@@ -47,7 +41,6 @@ class PostContainer extends Component {
       category,
       post,
       comments,
-      updatePost,
     };
     return <Post {...props} />;
   }
@@ -66,7 +59,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch, ownProps) {
   return {
     fetchData: (postId) => dispatch(commentsFetchData(postId)),
-    updatePost: (res) => dispatch(updatePost(getPostIdFromParams(ownProps), res)),
   };
 }
 

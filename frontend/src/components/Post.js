@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { RIEInput, RIETextArea } from 'riek';
 import _ from 'lodash';
 
+import { updatePost } from '../store/posts/actions';
 import { transformEpochToDate } from '../util/helpers';
 import Breadcrumb from './Breadcrumb';
 import Error from './Error';
@@ -13,7 +16,7 @@ import PostVote from './PostVote';
 
 class Post extends Component {
   render() {
-    const { category, post, comments, isLoading, hasErrored, updatePost } = this.props;
+    const { category, post, comments, isLoading, hasErrored, handleUpdatePost } = this.props;
     const { title, body, author, timestamp } = post;
     const date = transformEpochToDate(timestamp);
 
@@ -41,11 +44,11 @@ class Post extends Component {
           <div className="post__content">
             {post && (
               <article>
-                <h1>
+                <h1 className="editable">
                   {title && (
                     <RIEInput
                       value={title}
-                      change={updatePost}
+                      change={handleUpdatePost}
                       propName='title'
                       validate={_.isString}
                       className="fullwidth" />
@@ -54,14 +57,7 @@ class Post extends Component {
 
                 <div className="post__meta">
                   <div className="post__meta-author">
-                    {author && (
-                      <RIEInput
-                        value={author}
-                        change={updatePost}
-                        propName='author'
-                        validate={_.isString}
-                        className="fullwidth" />
-                    )}
+                    {author}
                   </div>
 
                   <div className="post__meta-date">
@@ -69,14 +65,14 @@ class Post extends Component {
                   </div>
                 </div>
 
-                <div className="post__body">
+                <div className="post__body editable">
                   {body && (
                     <RIETextArea
                       value={body}
-                      change={updatePost}
+                      change={handleUpdatePost}
                       propName='body'
                       validate={_.isString}
-                      className="fullwidth" />
+                      className="fullwidth minheight--200" />
                   )}
                 </div>
 
@@ -100,4 +96,14 @@ Post.propTypes = {
   comments:   PropTypes.array.isRequired,
 };
 
-export default Post;
+function mapStateToProps(state) {
+  return { };
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    handleUpdatePost: (changes) => dispatch(updatePost(ownProps.post, changes)),
+  };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post));

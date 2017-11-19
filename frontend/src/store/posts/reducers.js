@@ -1,5 +1,6 @@
 import {
   POST_VOTE_SUCCESS,
+  POST_UPDATE_SUCCESS,
   POSTS_FETCH_SUCCESS,
   POSTS_HAS_ERRORED,
   POSTS_ARE_LOADING
@@ -45,6 +46,7 @@ export function posts(state = {byId: {}, allIds: []}, action) {
       };
 
    case POST_VOTE_SUCCESS:
+   case POST_UPDATE_SUCCESS:
      const { post } = action;
      return {
        ...state,

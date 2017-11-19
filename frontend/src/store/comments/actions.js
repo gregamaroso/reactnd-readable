@@ -2,6 +2,7 @@ import API from '../../util/api';
 
 import {
   COMMENT_VOTE_SUCCESS,
+  COMMENT_UPDATE_SUCCESS,
   COMMENTS_FETCH_SUCCESS,
   COMMENTS_HAS_ERRORED,
   COMMENTS_ARE_LOADING
@@ -40,6 +41,13 @@ export function commentVoteSuccess(comment) {
   };
 }
 
+export function commentUpdateSuccess(comment) {
+  return {
+    type: COMMENT_UPDATE_SUCCESS,
+    comment,
+  };
+}
+
 /**
  * Action Creators
  */
@@ -64,5 +72,17 @@ export function commentsHandleVote(id, direction) {
   return (dispatch) => {
     API.voteOnComment(id, direction)
       .then((res) => dispatch(commentVoteSuccess(res)));
+  };
+}
+
+export function updateComment(origComment, updates) {
+  return (dispatch) => {
+    const comment = {
+      ...origComment,
+      ...updates
+    };
+
+    API.updateComment(origComment.id, comment)
+      .then((newComment) => dispatch(commentUpdateSuccess(newComment)));
   };
 }

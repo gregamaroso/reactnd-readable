@@ -163,6 +163,22 @@ const API = {
   getPost(id) {
   },
 
+  updatePost(id, post) {
+    const headers = {
+      method: 'PUT',
+      body: JSON.stringify(post)
+    };
+
+    return this.getPostPromise(id, headers)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then((res) => res.json());
+  },
+
   voteOnPost(id, direction) {
     // Sanitize the direction variable, defaulting to up
     direction = (direction === 'down') ? 'downVote' : 'upVote';
@@ -189,6 +205,25 @@ const API = {
    */
   getCommentsByPostId(postid) {
     return this.getCommentsByPostIdPromise(postid)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then((res) => res.json());
+  },
+
+  updateComment(id, comment) {
+    const headers = {
+      method: 'PUT',
+      body: JSON.stringify({
+        timestamp: new Date().valueOf(),
+        body: comment.body,
+      })
+    };
+
+    return this.getCommentPromise(id, headers)
       .then((res) => {
         if (!res.ok) {
           throw Error(res.statusText);

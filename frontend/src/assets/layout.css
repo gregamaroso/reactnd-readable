@@ -78,6 +78,22 @@ ul ul {
   width: 100%;
 }
 
+.minheight--200 {
+  min-height: 200px;
+}
+
+.editable {
+  border: 1px dotted transparent;
+}
+
+.editable:hover {
+  display: block;
+  position: relative;
+  background: url(./gear.png) top right no-repeat #f0f0f0;
+  border-color: #c8c8c8;
+}
+
+
 /* Posts */
 
 .post__content {

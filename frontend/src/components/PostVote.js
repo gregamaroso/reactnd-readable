@@ -11,7 +11,7 @@ class PostVote extends Component {
 
     return (
       <div className="post__voting">
-        Current Score: {voteScore}
+        Score: {voteScore}
         &nbsp;&nbsp;&nbsp;&nbsp;
         <span className="glyphicon glyphicon-thumbs-up" onClick={(e) => this.props.handleVote(id, 'up')} key="vote-up"></span>
         &nbsp;&nbsp;
