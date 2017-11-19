@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 
-// App initialization
 import { commentsFetchData } from '../store/comments/actions';
-
 import Post from '../components/Post';
 
 class PostContainer extends Component {
@@ -17,14 +15,20 @@ class PostContainer extends Component {
     // Load comments on demand, but only if we don't have them already
     const { comments } = this.props;
 
-    if (comments.length === 0) {
+    if (!comments.allIds.length) {
       this.props.fetchData(this.getPostId());
     }
   }
 
   render() {
-    const { categories, posts, comments, hasErrored, isLoading } = this.props;
+    const { categories, posts, hasErrored, isLoading } = this.props;
+    let { comments } = this.props;
     const postId = this.getPostId();
+
+    // Create an array of post objects from the prop
+    comments = comments.allIds.map((id) => {
+      return comments.byId[id];
+    });
 
     // TODO: this is too ugly to leave here
     const post = (posts && posts.byId && posts['byId'][postId]) ? posts['byId'][postId] : {};

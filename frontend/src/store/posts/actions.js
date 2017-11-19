@@ -1,6 +1,7 @@
 import API from '../../util/api';
 
 import {
+  POST_VOTE_SUCCESS,
   POSTS_FETCH_SUCCESS,
   POSTS_HAS_ERRORED,
   POSTS_ARE_LOADING
@@ -32,6 +33,13 @@ export function postsFetchDataSuccess(posts) {
   };
 }
 
+export function postVoteSuccess(post) {
+  return {
+    type: POST_VOTE_SUCCESS,
+    post
+  };
+}
+
 /**
  * Action Creators
  */
@@ -50,5 +58,12 @@ export function postsFetchData(category) {
         dispatch(postsAreLoading(false));
         dispatch(postsHasErrored(true))
       });
+  };
+}
+
+export function postsHandleVote(id, direction) {
+  return (dispatch) => {
+    API.voteOnPost(id, direction)
+      .then((res) => dispatch(postVoteSuccess(res)));
   };
 }

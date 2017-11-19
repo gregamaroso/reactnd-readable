@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { transformEpochToDate } from '../util/helpers';
 import Breadcrumb from './Breadcrumb';
 import Error from './Error';
-import Comment from './Comment';
+import CommentList from './CommentList';
 import PostVote from './PostVote';
 
-export default class Post extends Component {
+class Post extends Component {
   render() {
     const { category, post, comments, isLoading, hasErrored } = this.props;
-    const { title, body, author, timestamp, voteScore } = post;
+    const { title, body, author, timestamp } = post;
     const date = transformEpochToDate(timestamp);
 
     const breadcrumbItems = post
@@ -58,14 +59,20 @@ export default class Post extends Component {
               </article>
             )}
 
-            <div className="post__comments">
-            {comments.map((comment) => (
-              <Comment comment={comment} key={comment.id} />
-            ))}
-            </div>
+            <CommentList comments={comments} />
           </div>
         )}
       </div>
     )
   }
 }
+
+Post.propTypes = {
+  isLoading:  PropTypes.bool.isRequired,
+  hasErrored: PropTypes.bool.isRequired,
+  category:   PropTypes.object.isRequired,
+  post:       PropTypes.object.isRequired,
+  comments:   PropTypes.array.isRequired,
+};
+
+export default Post;

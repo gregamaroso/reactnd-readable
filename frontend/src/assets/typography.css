@@ -54,3 +54,7 @@ h4 {
   font-weight: bold;
   font-size: 1.1em;
 }
+
+.post__voting .glyphicon {
+  cursor: pointer;
+}

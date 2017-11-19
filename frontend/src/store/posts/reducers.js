@@ -1,4 +1,5 @@
 import {
+  POST_VOTE_SUCCESS,
   POSTS_FETCH_SUCCESS,
   POSTS_HAS_ERRORED,
   POSTS_ARE_LOADING
@@ -42,6 +43,16 @@ export function posts(state = {byId: {}, allIds: []}, action) {
         }, {}),
         allIds: posts.map((p) => p.id)
       };
+
+   case POST_VOTE_SUCCESS:
+     const { post } = action;
+     return {
+       ...state,
+       byId: {
+         ...state['byId'],
+         [post.id]: post,
+       }
+     };
 
     default:
       return state;

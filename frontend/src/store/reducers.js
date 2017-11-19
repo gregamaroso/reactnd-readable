@@ -4,19 +4,19 @@ import {
   categories,
   categoriesHasErrored,
   categoriesAreLoading
-} from '../store/categories/reducers'
+} from './categories/reducers'
 
 import {
   posts,
   postsHasErrored,
   postsAreLoading
-} from '../store/posts/reducers'
+} from './posts/reducers'
 
 import {
   comments,
   commentsHasErrored,
   commentsAreLoading
-} from '../store/comments/reducers'
+} from './comments/reducers'
 
 export default combineReducers({
   categories,

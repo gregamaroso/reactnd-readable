@@ -1,6 +1,7 @@
 import API from '../../util/api';
 
 import {
+  COMMENT_VOTE_SUCCESS,
   COMMENTS_FETCH_SUCCESS,
   COMMENTS_HAS_ERRORED,
   COMMENTS_ARE_LOADING
@@ -28,7 +29,14 @@ export function commentsAreLoading(bool) {
 export function commentsFetchDataSuccess(comments) {
   return {
     type: COMMENTS_FETCH_SUCCESS,
-    comments: comments.filter((comment) => comment.deleted === false)
+    comments
+  };
+}
+
+export function commentVoteSuccess(comment) {
+  return {
+    type: COMMENT_VOTE_SUCCESS,
+    comment,
   };
 }
 
@@ -50,5 +58,12 @@ export function commentsFetchData(postId) {
         dispatch(commentsAreLoading(false));
         dispatch(commentsHasErrored(true))
       });
+  };
+}
+
+export function commentsHandleVote(id, direction) {
+  return (dispatch) => {
+    API.voteOnComment(id, direction)
+      .then((res) => dispatch(commentVoteSuccess(res)));
   };
 }

@@ -25,12 +25,29 @@ const API = {
 
   getPostsByCategoryPromise(category) {
     const { base, headers } = this;
-    return fetch(`${base}/${category}/posts`, { headers });
+    return fetch(`${base}/${category}/posts`, { headers});
   },
 
-  getPostPromise(id) {
+  getPostPromise(id, extraHeaders = {}) {
     const { base, headers } = this;
-    return fetch(`${base}/posts/${id}`, { headers });
+    return fetch(`${base}/posts/${id}`, {
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      ...extraHeaders
+    });
+  },
+
+  getCommentPromise(id, extraHeaders = {}) {
+    const { base, headers } = this;
+    return fetch(`${base}/comments/${id}`, {
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      ...extraHeaders
+    });
   },
 
   getCommentsByPostIdPromise(postid) {
@@ -146,7 +163,25 @@ const API = {
   getPost(id) {
   },
 
-  updatePost(id) {
+  voteOnPost(id, direction) {
+    // Sanitize the direction variable, defaulting to up
+    direction = (direction === 'down') ? 'downVote' : 'upVote';
+
+    const headers = {
+      method: 'POST',
+      body: JSON.stringify({
+        option: direction,
+      })
+    };
+
+    return this.getPostPromise(id, headers)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then((res) => res.json());
   },
 
   /**
@@ -161,7 +196,28 @@ const API = {
         return res;
       })
       .then((res) => res.json());
-  }
+  },
+
+  voteOnComment(id, direction) {
+    // Sanitize the direction variable, defaulting to up
+    direction = (direction === 'down') ? 'downVote' : 'upVote';
+
+    const headers = {
+      method: 'POST',
+      body: JSON.stringify({
+        option: direction,
+      })
+    };
+
+    return this.getCommentPromise(id, headers)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then((res) => res.json());
+  },
 }
 
 export default API;
