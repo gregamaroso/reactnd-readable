@@ -3,19 +3,19 @@ import { combineReducers } from 'redux';
 import {
   categories,
   categoriesHasErrored,
-  categoriesAreLoading
+  categoriesAreLoading,
 } from './categories/reducers'
 
 import {
   posts,
   postsHasErrored,
-  postsAreLoading
+  postsAreLoading,
 } from './posts/reducers'
 
 import {
   comments,
   commentsHasErrored,
-  commentsAreLoading
+  commentsAreLoading,
 } from './comments/reducers'
 
 export default combineReducers({

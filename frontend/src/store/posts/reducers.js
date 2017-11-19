@@ -3,9 +3,12 @@ import {
   POST_UPDATE_SUCCESS,
   POSTS_FETCH_SUCCESS,
   POSTS_HAS_ERRORED,
-  POSTS_ARE_LOADING
+  POSTS_ARE_LOADING,
+  POSTS_REORDER_SUCCESS,
 } from './constants';
 
+
+const defaultPostsState = {byId: {}, allIds: []};
 
 /**
  * Reducers
@@ -33,7 +36,7 @@ export function postsAreLoading(state = false, action) {
   }
 }
 
-export function posts(state = {byId: {}, allIds: []}, action) {
+export function posts(state = defaultPostsState, action) {
   switch (action.type) {
     case POSTS_FETCH_SUCCESS:
       const { posts } = action;
@@ -55,6 +58,27 @@ export function posts(state = {byId: {}, allIds: []}, action) {
          [post.id]: post,
        }
      };
+
+   case POSTS_REORDER_SUCCESS:
+     const { sortKey } = action;
+
+     // score_desc, score_asc, date_desc, date_asc
+     const allPosts = Object.assign({}, state.byId);
+     const key = sortKey.indexOf('score') === 0 ? 'voteScore' : 'timestamp';
+     const dir = sortKey.indexOf('_desc') === 0 ? 'down' : 'up';
+
+console.log(key, dir);
+     state.allIds.sort((a, b) => {
+       if (dir === 'down') {
+         return allPosts[a][key] + allPosts[b][key];
+       }
+       else {
+         return allPosts[a][key] - allPosts[b][key];
+       }
+     });
+console.log(state.allIds);
+
+     return state;
 
     default:
       return state;

@@ -5,7 +5,8 @@ import {
   POST_UPDATE_SUCCESS,
   POSTS_FETCH_SUCCESS,
   POSTS_HAS_ERRORED,
-  POSTS_ARE_LOADING
+  POSTS_ARE_LOADING,
+  POSTS_REORDER_SUCCESS
 } from './constants';
 
 
@@ -45,6 +46,13 @@ export function postVoteSuccess(post) {
   return {
     type: POST_VOTE_SUCCESS,
     post
+  };
+}
+
+export function postReorderSuccess(sortKey) {
+  return {
+    type: POSTS_REORDER_SUCCESS,
+    sortKey,
   };
 }
 

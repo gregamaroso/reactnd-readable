@@ -2,39 +2,25 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 
+import { getCategoryByPost } from '../selectors/categories';
+import { getPostById } from '../selectors/posts';
+import { getVisibleComments } from '../selectors/comments';
 import { commentsFetchData } from '../store/comments/actions';
 import Post from '../components/Post';
 
-function getPostIdFromProps(props) {
-  const params = props.match.params;
-  return params.postid;
-}
-
 class PostContainer extends Component {
   componentDidMount() {
-    // Load comments on demand, but only if we don't have them already
     const { comments } = this.props;
 
-    if (!comments.allIds.length) {
-      this.props.fetchData(getPostIdFromProps(this.props));
+    // Load comments once when the component mounts
+    if (!comments.length) {
+      this.props.fetchData(this.props.match.params.postid);
     }
   }
 
   render() {
-    const { categories, posts, hasErrored, isLoading } = this.props;
-    let { comments } = this.props;
-    const postId = getPostIdFromProps(this.props);
+    const { category, post, comments, hasErrored, isLoading } = this.props;
 
-    // Create an array of post objects using the state prop
-    comments = comments.allIds.map((id) => {
-      return comments.byId[id];
-    });
-
-    // TODO: this is too ugly to leave here
-    const post = (posts && posts.byId && posts['byId'][postId]) ? posts['byId'][postId] : {};
-    const category = (categories && post && post.category && categories.byId) ? categories['byId'][post.category] : {};
-
-    // Create a local props var to dynamically sent to the Posts component
     const props = {
       isLoading,
       hasErrored,
@@ -46,11 +32,11 @@ class PostContainer extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    categories: state.categories,
-    posts: state.posts,
-    comments: state.comments,
+    category: getCategoryByPost(state.categories, ownProps),
+    post: getPostById(state.posts, ownProps),
+    comments: getVisibleComments(state.comments, ownProps),
     hasErrored: state.commentsHasErrored,
     isLoading: (state.commentsAreLoading || state.categoriesAreLoading || state.postsAreLoading),
   };

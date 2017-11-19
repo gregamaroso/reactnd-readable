@@ -20,6 +20,14 @@ body {
   zoom: 1;
 }
 
+/* Form ELements */
+
+select {
+  display: inline-block;
+  position: relative;
+  padding: .5em 1em;
+}
+
 /* Unordered Lists */
 
 ul,
@@ -95,6 +103,10 @@ ul ul {
 
 
 /* Posts */
+
+.posts__sorting {
+  float: right;
+}
 
 .post__content {
   margin: 10px 0 20px;
