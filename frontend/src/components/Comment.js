@@ -9,11 +9,6 @@ import CommentVote from './CommentVote';
 import { transformEpochToDate } from '../util/helpers';
 
 class Comment extends Component {
-  constructor(props) {
-     super(props);
-     this.state = {commentId: props.comment.id};
-  }
-
   render() {
     const { comment, handleUpdateComment } = this.props;
     const { id, body, author, timestamp, voteScore } = comment;
