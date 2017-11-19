@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { RIEInput, RIETextArea } from 'riek';
+import _ from 'lodash';
 
 import { transformEpochToDate } from '../util/helpers';
 import Breadcrumb from './Breadcrumb';
@@ -11,7 +13,7 @@ import PostVote from './PostVote';
 
 class Post extends Component {
   render() {
-    const { category, post, comments, isLoading, hasErrored } = this.props;
+    const { category, post, comments, isLoading, hasErrored, updatePost } = this.props;
     const { title, body, author, timestamp } = post;
     const date = transformEpochToDate(timestamp);
 
@@ -39,11 +41,27 @@ class Post extends Component {
           <div className="post__content">
             {post && (
               <article>
-                <h1>{title}</h1>
+                <h1>
+                  {title && (
+                    <RIEInput
+                      value={title}
+                      change={updatePost}
+                      propName='title'
+                      validate={_.isString}
+                      className="fullwidth" />
+                  )}
+                </h1>
 
                 <div className="post__meta">
                   <div className="post__meta-author">
-                    {author}
+                    {author && (
+                      <RIEInput
+                        value={author}
+                        change={updatePost}
+                        propName='author'
+                        validate={_.isString}
+                        className="fullwidth" />
+                    )}
                   </div>
 
                   <div className="post__meta-date">
@@ -52,7 +70,14 @@ class Post extends Component {
                 </div>
 
                 <div className="post__body">
-                  {body}
+                  {body && (
+                    <RIETextArea
+                      value={body}
+                      change={updatePost}
+                      propName='body'
+                      validate={_.isString}
+                      className="fullwidth" />
+                  )}
                 </div>
 
                  <PostVote post={post} />

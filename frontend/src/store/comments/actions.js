@@ -50,7 +50,6 @@ export function commentsFetchData(postId) {
 
     API.getCommentsByPostId(postId)
       .then((res) => {
-
         dispatch(commentsAreLoading(false));
         dispatch(commentsFetchDataSuccess(res));
       })

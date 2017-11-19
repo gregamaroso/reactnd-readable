@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 
+import { updatePost } from '../store/posts/actions';
 import { commentsFetchData } from '../store/comments/actions';
 import Post from '../components/Post';
+
+function getPostIdFromParams(props) {
+  const params = props.match.params;
+  return params.postid;
+}
 
 class PostContainer extends Component {
   getPostId() {
@@ -21,9 +27,9 @@ class PostContainer extends Component {
   }
 
   render() {
-    const { categories, posts, hasErrored, isLoading } = this.props;
+    const { categories, posts, hasErrored, isLoading, updatePost } = this.props;
     let { comments } = this.props;
-    const postId = this.getPostId();
+    const postId = getPostIdFromParams(this.props);
 
     // Create an array of post objects from the prop
     comments = comments.allIds.map((id) => {
@@ -41,6 +47,7 @@ class PostContainer extends Component {
       category,
       post,
       comments,
+      updatePost,
     };
     return <Post {...props} />;
   }
@@ -56,9 +63,10 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
-    fetchData: (postId) => dispatch(commentsFetchData(postId))
+    fetchData: (postId) => dispatch(commentsFetchData(postId)),
+    updatePost: (res) => dispatch(updatePost(getPostIdFromParams(ownProps), res)),
   };
 }
 

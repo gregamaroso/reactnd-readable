@@ -50,7 +50,6 @@ export function postsFetchData(category) {
 
     API.getPosts(category)
       .then((res) => {
-
         dispatch(postsAreLoading(false));
         dispatch(postsFetchDataSuccess(res));
       })
@@ -65,5 +64,15 @@ export function postsHandleVote(id, direction) {
   return (dispatch) => {
     API.voteOnPost(id, direction)
       .then((res) => dispatch(postVoteSuccess(res)));
+  };
+}
+
+export function updatePost(postId, obj) {
+  return (dispatch, getState) => {
+    console.log(postId);
+    console.log(obj);
+    console.log( getState() );
+
+    // TODO: We have the variables to update a post. Need to create an api method.
   };
 }

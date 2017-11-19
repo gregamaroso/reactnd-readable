@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Loading from 'react-loading'
 import { Link } from 'react-router-dom';
 
+import PostVote from './PostVote';
 import Breadcrumb from './Breadcrumb';
 import Error from './Error';
 
@@ -35,7 +36,8 @@ export default class Posts extends Component {
           <li key={post.id}>
             <h3><Link to={'/' + post.category + '/' + post.id}>{post.title}</Link></h3>
             <div>by {post.author}</div>
-            <div>Category: {post.category} / Comments: {post.commentCount} / Score: {post.voteScore}</div>
+            <div>Category: {post.category} / Comments: {post.commentCount}</div>
+            <div><PostVote post={post} /></div>
           </li>
           ))}
         </ul>
