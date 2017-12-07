@@ -1,5 +1,3 @@
-import API from '../../util/api';
-
 import {
   CATEGORIES_FETCH_SUCCESS,
   CATEGORIES_HAS_ERRORED,
@@ -36,15 +34,11 @@ export function categoriesFetchDataSuccess(categories) {
  * Action Creators
  */
 
-export function categoriesFetchData() {
+// Note: this action creator is unnecessary. I could just dispatch directly to the action from App.js
+export function categoriesFetchData(categories) {
   return (dispatch) => {
-    // dispatch(categoriesAreLoading(true));
-
-    API.getCategories()
-      .then((categories) => {
-        dispatch(categoriesAreLoading(false));
-        dispatch(categoriesFetchDataSuccess(categories));
-      })
-      .catch(() => dispatch(categoriesHasErrored(true)));
+    // See: API.getCategoriesAndPosts()
+    dispatch(categoriesAreLoading(false));
+    dispatch(categoriesFetchDataSuccess(categories));
   }
 }

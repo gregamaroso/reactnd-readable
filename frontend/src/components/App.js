@@ -74,13 +74,14 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchData: () => {
-      // Since this is a combo query for categories and posts,
-      // it doesn't make sense to make and action creator. So
-      // insteaded we'll just run the dispatch directly here.
       API.getCategoriesAndPosts()
         .then((res) => {
-          dispatch(categoriesFetchData());
-          dispatch(postsFetchData());
+          const { posts, categories } = res;
+
+          // Instead of dispatching to an action creator, I should just skip the middleman
+          // and dispatch directly to the action.
+          dispatch(categoriesFetchData(categories));
+          dispatch(postsFetchData(posts));
         })
         .catch((err) => {
           // Handle error?

@@ -71,8 +71,6 @@ export function commentRemoveSuccess(commentId) {
 
 export function commentsFetchData(postId) {
   return (dispatch) => {
-    // dispatch(commentsAreLoading(true));
-
     API.getCommentsByPostId(postId)
       .then((res) => {
         dispatch(commentsAreLoading(false));

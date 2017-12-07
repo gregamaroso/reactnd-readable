@@ -12,13 +12,13 @@ class Header extends Component {
 
     return (
       <header className="app__header clearfix">
-        <div class="app__content">
-          <h1 className="app__header-title"><Link to="/"><img src={bike} /></Link></h1>
+        <div className="app__content">
+          <h1 className="app__header-title"><Link to="/"><img src={bike} alt="Home" /></Link></h1>
 
           <div className="app__header-nav">
             {categories.map((c) => {
               const uri = '/' + c.path;
-              return <Link to={uri}>{c.name}</Link>
+              return <Link key={uri} to={uri}>{c.name}</Link>
             })}
           </div>
         </div>

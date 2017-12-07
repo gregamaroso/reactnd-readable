@@ -77,19 +77,12 @@ export function postReorderSuccess(sortKey) {
  * Action Creators
  */
 
-export function postsFetchData(category) {
+// Note: this action creator is unnecessary. I could just dispatch directly to the action from App.js
+export function postsFetchData(posts) {
   return (dispatch) => {
-    // dispatch(postsAreLoading(true));
-
-    API.getPosts(category)
-      .then((res) => {
-        dispatch(postsAreLoading(false));
-        dispatch(postsFetchDataSuccess(res));
-      })
-      .catch((e) => {
-        dispatch(postsAreLoading(false));
-        dispatch(postsHasErrored(true))
-      });
+    // See: API.getCategoriesAndPosts()
+    dispatch(postsAreLoading(false));
+    dispatch(postsFetchDataSuccess(posts));
   };
 }
 
