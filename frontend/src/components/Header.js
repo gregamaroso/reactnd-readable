@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header className="app__header">
       <Link to="/">
-        <h1 className="app__header-title">Readable</h1>
+        <h1 className="app__header-title">Greg Amaroso's Readable Project</h1>
       </Link>
     </header>
   );
