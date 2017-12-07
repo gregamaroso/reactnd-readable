@@ -1,18 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 
-// Utils
-// import logo from '../assets/logo.svg';
+import { getAllCategories } from '../selectors/categories';
+import bike from '../assets/icon_bike_off.png';
 import '../assets/header.css';
 
-const Header = () => {
-  return (
-    <header className="app__header">
-      <Link to="/">
-        <h1 className="app__header-title">Greg Amaroso's Readable Project</h1>
-      </Link>
-    </header>
-  );
-};
+class Header extends Component {
+  render() {
+    const { categories } = this.props;
 
-export default Header;
+    return (
+      <header className="app__header clearfix">
+        <div class="app__content">
+          <h1 className="app__header-title"><Link to="/"><img src={bike} /></Link></h1>
+
+          <div className="app__header-nav">
+            {categories.map((c) => {
+              const uri = '/' + c.path;
+              return <Link to={uri}>{c.name}</Link>
+            })}
+          </div>
+        </div>
+      </header>
+    );
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    categories: getAllCategories(state.categories)
+  };
+}
+
+export default connect(mapStateToProps)(Header);
