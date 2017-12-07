@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 
 import { getCategoryByPost } from '../selectors/categories';
-import { getPostById } from '../selectors/posts';
+import { getPostById, isValidPostRoute } from '../selectors/posts';
 import { getVisibleComments } from '../selectors/comments';
 import { commentsFetchData } from '../store/comments/actions';
 import Post from '../components/Post';
+import Error from '../components/Error';
 
 class PostContainer extends Component {
   componentDidMount() {
@@ -19,7 +20,7 @@ class PostContainer extends Component {
   }
 
   render() {
-    const { category, post, comments, hasErrored, isLoading } = this.props;
+    const { category, post, comments, hasErrored, isLoading, isValidRoute } = this.props;
 
     const props = {
       isLoading,
@@ -28,12 +29,23 @@ class PostContainer extends Component {
       post,
       comments,
     };
-    return <Post {...props} />;
+    return (
+      <div>
+        {isValidRoute && (
+          <Post {...props} />
+        )}
+
+        {!isValidRoute && (
+          <Error message="Invalid post id" />
+        )}
+      </div>
+    );
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
+    isValidRoute: isValidPostRoute(state.posts, ownProps),
     category: getCategoryByPost(state.categories, ownProps),
     post: getPostById(state.posts, ownProps),
     comments: getVisibleComments(state.comments, ownProps),
