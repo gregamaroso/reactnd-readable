@@ -144,6 +144,10 @@ ul ul {
   clear: both;
 }
 
+.post__comment .button--remove {
+  margin-top: 8px;
+}
+
 .post__meta {
   padding-bottom: 20px;
 }

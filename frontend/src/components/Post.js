@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { RIEInput, RIETextArea } from 'riek';
 import _ from 'lodash';
+import Confirm from 'react-confirm-bootstrap';
 
-import { updatePost } from '../store/posts/actions';
+import { updatePost, removePost } from '../store/posts/actions';
 import { transformEpochToDate } from '../util/helpers';
 import Breadcrumb from './Breadcrumb';
 import Error from './Error';
@@ -16,7 +17,7 @@ import PostVote from './PostVote';
 
 class Post extends Component {
   render() {
-    const { category, post, comments, isLoading, hasErrored, handleUpdatePost } = this.props;
+    const { category, post, comments, isLoading, hasErrored, handleUpdatePost, handleRemovePost } = this.props;
     const { title, body, author, timestamp } = post;
     const date = transformEpochToDate(timestamp);
 
@@ -76,7 +77,15 @@ class Post extends Component {
                   )}
                 </div>
 
-                 <PostVote post={post} />
+                <PostVote post={post} />
+
+                <Confirm
+                  onConfirm={handleRemovePost}
+                  body="Are you sure you want to remove this post?"
+                  confirmText="Yes"
+                  title="Remove Post">
+                  <button className="button--remove">remove post</button>
+                </Confirm>
               </article>
             )}
 
@@ -105,6 +114,12 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch, ownProps) {
   return {
     handleUpdatePost: (changes) => dispatch(updatePost(ownProps.post, changes)),
+    handleRemovePost: () => {
+      dispatch(removePost(ownProps.post.id));
+
+      // Go back to the homepage
+      ownProps.history.push('/');
+    }
   };
 }
 

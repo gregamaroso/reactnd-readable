@@ -5,6 +5,7 @@
   "dependencies": {
     "prop-types": "^15.6.0",
     "react": "^16.1.1",
+    "react-confirm-bootstrap": "^5.1.1",
     "react-dom": "^16.1.1",
     "react-loading": "^1.0.2",
     "react-modal": "^3.1.7",

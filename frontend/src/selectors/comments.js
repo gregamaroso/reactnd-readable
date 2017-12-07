@@ -10,6 +10,9 @@ export const getVisibleComments = createSelector(
   (postId, comments) =>
     comments.allIds.reduce((a, cid) => {
       const co = comments.byId[cid] || {};
+      if (co.deleted === true) {
+        return a;
+      }
       if (co.parentId === postId) {
         a.push(co);
       }

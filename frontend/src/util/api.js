@@ -213,6 +213,21 @@ const API = {
       .then((res) => res.json());
   },
 
+  removePost(id) {
+    const headers = {
+      method: 'DELETE',
+    };
+
+    return this.getPostPromise(id, headers)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then((res) => res.json());
+  },
+
   voteOnPost(id, direction) {
     // Sanitize the direction variable, defaulting to up
     direction = (direction === 'down') ? 'downVote' : 'upVote';
@@ -272,6 +287,21 @@ const API = {
         timestamp: new Date().valueOf(),
         body: comment.body,
       })
+    };
+
+    return this.getCommentPromise(id, headers)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then((res) => res.json());
+  },
+
+  removeComment(id) {
+    const headers = {
+      method: 'DELETE',
     };
 
     return this.getCommentPromise(id, headers)

@@ -10,6 +10,9 @@ export const getVisiblePosts = createSelector(
   (category, posts) =>
     posts.allIds.reduce((a, pid) => {
       const po = posts.byId[pid] || {};
+      if (po.deleted === true) {
+        return a;
+      }
       if (category === 'all' || po.category === category) {
         a.push(po);
       }

@@ -2,6 +2,7 @@ import {
   POST_VOTE_SUCCESS,
   POST_CREATE_SUCCESS,
   POST_UPDATE_SUCCESS,
+  POST_REMOVE_SUCCESS,
   POSTS_FETCH_SUCCESS,
   POSTS_HAS_ERRORED,
   POSTS_ARE_LOADING,
@@ -38,7 +39,7 @@ export function postsAreLoading(state = false, action) {
 }
 
 export function posts(state = defaultPostsState, action) {
-  const { posts, post } = action;
+  const { posts, post, postId } = action;
 
   switch (action.type) {
     case POSTS_FETCH_SUCCESS:
@@ -88,6 +89,21 @@ export function posts(state = defaultPostsState, action) {
         allIds: [
           ...state['allIds'],
           post.id,
+        ]
+      };
+
+    case POST_REMOVE_SUCCESS:
+      return {
+        ...state,
+        byId: {
+          ...state['byId'],
+          [postId]: {
+            ...state['byId'][postId],
+            deleted: true,
+          }
+        },
+        allIds: [
+          ...state['allIds'],
         ]
       };
 

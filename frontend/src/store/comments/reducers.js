@@ -2,6 +2,7 @@ import {
   COMMENT_CREATE_SUCCESS,
   COMMENT_VOTE_SUCCESS,
   COMMENT_UPDATE_SUCCESS,
+  COMMENT_REMOVE_SUCCESS,
   COMMENTS_FETCH_SUCCESS,
   COMMENTS_HAS_ERRORED,
   COMMENTS_ARE_LOADING
@@ -35,7 +36,7 @@ export function commentsAreLoading(state = false, action) {
 }
 
 export function comments(state = {byId: {}, allIds: []}, action) {
-  const { comment, comments } = action;
+  const { comment, comments, commentId } = action;
 
   switch (action.type) {
     case COMMENTS_FETCH_SUCCESS:
@@ -67,6 +68,21 @@ export function comments(state = {byId: {}, allIds: []}, action) {
         allIds: [
           ...state['allIds'],
           comment.id,
+        ]
+      };
+
+    case COMMENT_REMOVE_SUCCESS:
+      return {
+        ...state,
+        byId: {
+          ...state['byId'],
+          [commentId]: {
+            ...state['byId'][commentId],
+            deleted: true,
+          }
+        },
+        allIds: [
+          ...state['allIds'],
         ]
       };
 

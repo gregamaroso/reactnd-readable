@@ -5,6 +5,7 @@ import {
   COMMENT_CREATE_SUCCESS,
   COMMENT_VOTE_SUCCESS,
   COMMENT_UPDATE_SUCCESS,
+  COMMENT_REMOVE_SUCCESS,
   COMMENTS_FETCH_SUCCESS,
   COMMENTS_HAS_ERRORED,
   COMMENTS_ARE_LOADING
@@ -54,6 +55,13 @@ export function commentUpdateSuccess(comment) {
   return {
     type: COMMENT_UPDATE_SUCCESS,
     comment,
+  };
+}
+
+export function commentRemoveSuccess(commentId) {
+  return {
+    type: COMMENT_REMOVE_SUCCESS,
+    commentId,
   };
 }
 
@@ -113,5 +121,12 @@ export function updateComment(origComment, updates) {
 
     API.updateComment(origComment.id, comment)
       .then((newComment) => dispatch(commentUpdateSuccess(newComment)));
+  };
+}
+
+export function removeComment(commentId) {
+  return (dispatch) => {
+    API.removeComment(commentId)
+      .then((res) => dispatch(commentRemoveSuccess(commentId)));
   };
 }

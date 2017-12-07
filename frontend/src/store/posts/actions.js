@@ -5,6 +5,7 @@ import {
   POST_VOTE_SUCCESS,
   POST_CREATE_SUCCESS,
   POST_UPDATE_SUCCESS,
+  POST_REMOVE_SUCCESS,
   POSTS_FETCH_SUCCESS,
   POSTS_HAS_ERRORED,
   POSTS_ARE_LOADING,
@@ -49,6 +50,13 @@ export function postUpdateSuccess(post) {
     type: POST_UPDATE_SUCCESS,
     post
   };
+}
+
+export function postRemoveSuccess(postId) {
+  return {
+    type: POST_REMOVE_SUCCESS,
+    postId
+  }
 }
 
 export function postVoteSuccess(post) {
@@ -121,5 +129,12 @@ export function updatePost(origPost, changes) {
 
     API.updatePost(origPost.id, post)
       .then((newPost) => dispatch(postVoteSuccess(newPost)));
+  };
+}
+
+export function removePost(postId) {
+  return (dispatch) => {
+    API.removePost(postId)
+      .then((res) => dispatch(postRemoveSuccess(postId)));
   };
 }

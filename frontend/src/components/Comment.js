@@ -3,28 +3,39 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { RIETextArea } from 'riek';
 import _ from 'lodash';
+import Confirm from 'react-confirm-bootstrap';
 
-import { updateComment } from '../store/comments/actions';
+import { updateComment, removeComment } from '../store/comments/actions';
 import CommentVote from './CommentVote';
 import { transformEpochToDate } from '../util/helpers';
 
 class Comment extends Component {
   render() {
-    const { comment, handleUpdateComment } = this.props;
+    const { comment, handleUpdateComment, handleRemoveComment } = this.props;
     const { id, body, author, timestamp, voteScore } = comment;
     const date = transformEpochToDate(timestamp);
 
     return (
       <div className="post__comment clearfix">
-        <div className="post__comment-body editable">
-          {body && (
-            <RIETextArea
-              value={body}
-              change={handleUpdateComment}
-              propName='body'
-              validate={_.isString}
-              className="fullwidth minheight--200" />
-          )}
+        <div className="post__comment-body">
+          <div className="editable">
+            {body && (
+              <RIETextArea
+                value={body}
+                change={handleUpdateComment}
+                propName='body'
+                validate={_.isString}
+                className="fullwidth minheight--200" />
+            )}
+          </div>
+
+          <Confirm
+            onConfirm={handleRemoveComment}
+            body="Are you sure you want to remove this comment?"
+            confirmText="Yes"
+            title="Remove Comment">
+            <button className="button--remove">remove comment</button>
+          </Confirm>
         </div>
 
         <div className="post__comment-meta">
@@ -50,6 +61,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch, ownProps) {
   return {
     handleUpdateComment: (changes) => dispatch(updateComment(ownProps.comment, changes)),
+    handleRemoveComment: () => dispatch(removeComment(ownProps.comment.id)),
   };
 }
 
