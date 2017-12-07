@@ -1,4 +1,5 @@
 import {
+  COMMENT_CREATE_SUCCESS,
   COMMENT_VOTE_SUCCESS,
   COMMENT_UPDATE_SUCCESS,
   COMMENTS_FETCH_SUCCESS,
@@ -34,9 +35,10 @@ export function commentsAreLoading(state = false, action) {
 }
 
 export function comments(state = {byId: {}, allIds: []}, action) {
+  const { comment, comments } = action;
+
   switch (action.type) {
     case COMMENTS_FETCH_SUCCESS:
-      const { comments } = action;
       return {
         byId: comments.filter((c) => c.deleted === false).reduce((a, c) => {
           a[c.id] = c;
@@ -47,13 +49,25 @@ export function comments(state = {byId: {}, allIds: []}, action) {
 
     case COMMENT_VOTE_SUCCESS:
     case COMMENT_UPDATE_SUCCESS:
-      const { comment } = action;
       return {
         ...state,
         byId: {
           ...state['byId'],
           [comment.id]: comment,
         }
+      };
+
+    case COMMENT_CREATE_SUCCESS:
+      return {
+        ...state,
+        byId: {
+          ...state['byId'],
+          [comment.id]: comment,
+        },
+        allIds: [
+          ...state['allIds'],
+          comment.id,
+        ]
       };
 
     default:

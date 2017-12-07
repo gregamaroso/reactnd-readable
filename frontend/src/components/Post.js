@@ -80,7 +80,9 @@ class Post extends Component {
               </article>
             )}
 
-            <CommentList comments={comments} />
+            <CommentList
+              postId={post.id}
+              comments={comments} />
           </div>
         )}
       </div>

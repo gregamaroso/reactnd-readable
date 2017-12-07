@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
-// import Loading from 'react-loading'
-// import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
-// import { RIEInput, RIETextArea } from 'riek';
-// import _ from 'lodash';
 
 import { getAllCategories } from '../selectors/categories';
 import { createPost } from '../store/posts/actions';
-// import Breadcrumb from './Breadcrumb';
-// import Error from './Error';
-// import CommentList from './CommentList';
-// import PostVote from './PostVote';
 
 class CreatePost extends Component {
   constructor(props) {
@@ -63,16 +54,6 @@ class CreatePost extends Component {
     )
   }
 }
-
-/*
-Post.propTypes = {
-  isLoading:  PropTypes.bool.isRequired,
-  hasErrored: PropTypes.bool.isRequired,
-  category:   PropTypes.object.isRequired,
-  post:       PropTypes.object.isRequired,
-  comments:   PropTypes.array.isRequired,
-};
-*/
 
 function mapStateToProps(state) {
   return {

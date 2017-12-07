@@ -45,6 +45,18 @@ const API = {
     });
   },
 
+  getAddCommentPromise(extraHeaders = {}) {
+    const { base, headers } = this;
+
+    return fetch(`${base}/comments`, {
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      ...extraHeaders
+    });
+  },
+
   getCommentPromise(id, extraHeaders = {}) {
     const { base, headers } = this;
     return fetch(`${base}/comments/${id}`, {
@@ -234,6 +246,23 @@ const API = {
         return res;
       })
       .then((res) => res.json());
+  },
+
+  createComment(comment) {
+    const headers = {
+      method: 'POST',
+      body: JSON.stringify(comment)
+    };
+
+    return this.getAddCommentPromise(headers)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then((res) => res.json())
+      .then((res) => Object.assign({}, res, comment));  // combine response with original data
   },
 
   updateComment(id, comment) {

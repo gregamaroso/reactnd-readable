@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Comment from './Comment';
+import CreateComment from './CreateComment';
 
 class CommentList extends Component {
   render() {
-    const { comments } = this.props;
+    const { postId, comments } = this.props;
 
     return (
       <div className="post__comments">
-      {comments.map((comment) => (
-        <Comment comment={comment} key={comment.id} />
-      ))}
+        {comments.map((comment) => (
+          <Comment comment={comment} key={comment.id} />
+        ))}
+
+        <CreateComment postId={postId} />
       </div>
     );
   }

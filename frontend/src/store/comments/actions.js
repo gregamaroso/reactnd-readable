@@ -1,6 +1,8 @@
 import API from '../../util/api';
+import { generateRandomPostId } from '../../util/helpers';
 
 import {
+  COMMENT_CREATE_SUCCESS,
   COMMENT_VOTE_SUCCESS,
   COMMENT_UPDATE_SUCCESS,
   COMMENTS_FETCH_SUCCESS,
@@ -31,6 +33,13 @@ export function commentsFetchDataSuccess(comments) {
   return {
     type: COMMENTS_FETCH_SUCCESS,
     comments
+  };
+}
+
+export function commentCreateSuccess(comment) {
+  return {
+    type: COMMENT_CREATE_SUCCESS,
+    comment
   };
 }
 
@@ -72,6 +81,26 @@ export function commentsHandleVote(id, direction) {
   return (dispatch) => {
     API.voteOnComment(id, direction)
       .then((res) => dispatch(commentVoteSuccess(res)));
+  };
+}
+
+export function createComment(comment) {
+  return (dispatch) => {
+    const { body, author, postId } = comment;
+    const mComment = {
+      id: generateRandomPostId(),
+      timestamp: new Date().valueOf(),
+      body,
+      author,
+      parentId: postId,
+    };
+
+    API.createComment(mComment)
+      .then((c) => dispatch(commentCreateSuccess(c)));
+
+    // TODO: Since a new comment is being created, technically
+    //       we should update the post's comment count as well.
+    //       We could either reload all posts, or just update state
   };
 }
 
