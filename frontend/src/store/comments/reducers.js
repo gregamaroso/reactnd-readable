@@ -25,7 +25,7 @@ export function commentsHasErrored(state = false, action) {
   }
 }
 
-export function commentsAreLoading(state = false, action) {
+export function commentsAreLoading(state = true, action) {
   switch (action.type) {
     case COMMENTS_ARE_LOADING:
       return action.isLoading;

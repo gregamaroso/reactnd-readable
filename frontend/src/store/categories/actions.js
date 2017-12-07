@@ -38,7 +38,7 @@ export function categoriesFetchDataSuccess(categories) {
 
 export function categoriesFetchData() {
   return (dispatch) => {
-    dispatch(categoriesAreLoading(true));
+    // dispatch(categoriesAreLoading(true));
 
     API.getCategories()
       .then((categories) => {

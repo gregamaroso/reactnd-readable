@@ -28,7 +28,7 @@ export function postsHasErrored(state = false, action) {
   }
 }
 
-export function postsAreLoading(state = false, action) {
+export function postsAreLoading(state = true, action) {
   switch (action.type) {
     case POSTS_ARE_LOADING:
       return action.isLoading;

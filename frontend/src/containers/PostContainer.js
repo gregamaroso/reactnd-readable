@@ -36,7 +36,7 @@ class PostContainer extends Component {
         )}
 
         {!isValidRoute && (
-          <Error message="Invalid post id" />
+          <Error message="Invalid post" />
         )}
       </div>
     );

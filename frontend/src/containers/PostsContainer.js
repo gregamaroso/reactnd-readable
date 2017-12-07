@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 
 import { getVisiblePosts } from '../selectors/posts';
-import { getVisibleCategory } from '../selectors/categories';
+import { getVisibleCategory, isValidCategoryRoute } from '../selectors/categories';
 import { postReorderSuccess } from '../store/posts/actions';
 import Posts from '../components/Posts';
+import Error from '../components/Error';
 
 class PostsContainer extends Component {
   render() {
-    const { category, posts, isLoading, hasErrored, handlePostsSort } = this.props;
+    const { category, posts, isLoading, hasErrored, handlePostsSort, isValidRoute } = this.props;
 
     // Boolean for whether to show the <category> breadcrumb
     const showCategoryBreadcrumb = !!category.name;
@@ -22,12 +23,23 @@ class PostsContainer extends Component {
       showCategoryBreadcrumb,
       handlePostsSort,
     };
-    return <Posts {...props} />;
+    return (
+      <div>
+        {!isLoading && isValidRoute && (
+          <Posts {...props} />
+        )}
+
+        {!isLoading && !isValidRoute && (
+          <Error message="Invalid category" />
+        )}
+      </div>
+    );
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
+    isValidRoute: isValidCategoryRoute(state.categories, ownProps),
     category: getVisibleCategory(state.categories, ownProps),
     posts: getVisiblePosts(state.posts, ownProps),
     hasErrored: state.postsHasErrored,

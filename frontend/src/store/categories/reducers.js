@@ -21,7 +21,7 @@ export function categoriesHasErrored(state = false, action) {
   }
 }
 
-export function categoriesAreLoading(state = false, action) {
+export function categoriesAreLoading(state = true, action) {
   switch (action.type) {
     case CATEGORIES_ARE_LOADING:
       return action.isLoading;

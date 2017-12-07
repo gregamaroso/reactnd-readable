@@ -95,7 +95,7 @@ class Post extends Component {
           </div>
         )}
       </div>
-    )
+    );
   }
 }
 

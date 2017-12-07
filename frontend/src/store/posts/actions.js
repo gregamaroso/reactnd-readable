@@ -79,7 +79,7 @@ export function postReorderSuccess(sortKey) {
 
 export function postsFetchData(category) {
   return (dispatch) => {
-    dispatch(postsAreLoading(true));
+    // dispatch(postsAreLoading(true));
 
     API.getPosts(category)
       .then((res) => {
