@@ -1,7 +1,9 @@
 import API from '../../util/api';
+import { generateRandomPostId } from '../../util/helpers';
 
 import {
   POST_VOTE_SUCCESS,
+  POST_CREATE_SUCCESS,
   POST_UPDATE_SUCCESS,
   POSTS_FETCH_SUCCESS,
   POSTS_HAS_ERRORED,
@@ -32,6 +34,13 @@ export function postsFetchDataSuccess(posts) {
   return {
     type: POSTS_FETCH_SUCCESS,
     posts
+  };
+}
+
+export function postCreateSuccess(post) {
+  return {
+    type: POST_CREATE_SUCCESS,
+    post
   };
 }
 
@@ -80,6 +89,26 @@ export function postsHandleVote(id, direction) {
   return (dispatch) => {
     API.voteOnPost(id, direction)
       .then((res) => dispatch(postVoteSuccess(res)));
+  };
+}
+
+export function createPost(post) {
+  return (dispatch) => {
+    const { title, body, author, category } = post;
+    const mPost = {
+      id: generateRandomPostId(),
+      timestamp: new Date().valueOf(),
+      title,
+      body,
+      author,
+      category,
+      voteScore: 0,
+      deleted: false,
+      commentCount: 0,
+    };
+
+    API.createPost(mPost)
+      .then((p) => dispatch(postCreateSuccess(p)));
   };
 }
 

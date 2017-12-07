@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import Loading from 'react-loading'
@@ -13,6 +13,7 @@ import { postsFetchData } from '../store/posts/actions';
 import Error from './Error';
 import Header from './Header';
 import Footer from './Footer';
+import CreatePost from '../components/CreatePost';
 import PostsContainer from '../containers/PostsContainer';
 import PostContainer from '../containers/PostContainer';
 
@@ -46,9 +47,12 @@ class App extends Component {
 
         {!isLoading && !hasErrored && (
           <div className="app__content">
-            <Route exact path="/"                  component={PostsContainer} />
-            <Route exact path="/:category"         component={PostsContainer} />
-            <Route       path="/:category/:postid" component={PostContainer} />
+            <Switch>
+              <Route exact path="/"                  component={PostsContainer} />
+              <Route exact path="/create-post"       component={CreatePost} />
+              <Route exact path="/:category"         component={PostsContainer} />
+              <Route exact path="/:category/:postid" component={PostContainer} />
+            </Switch>
           </div>
         )}
 

@@ -22,10 +22,31 @@ body {
 
 /* Form ELements */
 
-select {
+form { }
+
+form label {
+  display: block;
+  font-weight: bold;
+}
+
+form select {
   display: inline-block;
   position: relative;
   padding: .5em 1em;
+}
+
+.form__item {
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.form__item input[type="textfield"],
+.form__item textarea {
+  min-width: 600px;
+}
+
+.form__item textarea {
+  min-height: 300px;
 }
 
 /* Unordered Lists */

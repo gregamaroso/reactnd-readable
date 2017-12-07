@@ -53,6 +53,8 @@ export default class Posts extends Component {
           </li>
           ))}
         </ul>
+
+        <p><br /><Link to="/create-post">Add New Post &raquo;</Link></p>
       </div>
     );
   }

@@ -18,14 +18,20 @@ const API = {
     return fetch(`${base}/categories`, { headers });
   },
 
-  getPostsPromise() {
+  getPostsPromise(extraHeaders = {}) {
     const { base, headers } = this;
-    return fetch(`${base}/posts`, { headers });
+    return fetch(`${base}/posts`, {
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      ...extraHeaders
+    });
   },
 
   getPostsByCategoryPromise(category) {
     const { base, headers } = this;
-    return fetch(`${base}/${category}/posts`, { headers});
+    return fetch(`${base}/${category}/posts`, { headers });
   },
 
   getPostPromise(id, extraHeaders = {}) {
@@ -161,6 +167,22 @@ const API = {
   },
 
   getPost(id) {
+  },
+
+  createPost(post) {
+    const headers = {
+      method: 'POST',
+      body: JSON.stringify(post)
+    };
+
+    return this.getPostsPromise(headers)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then((res) => res.json());
   },
 
   updatePost(id, post) {
